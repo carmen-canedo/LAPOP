@@ -5,26 +5,45 @@ editor_options:
   chunk_output_type: inline
 ---
 
-##Lengthening the data set
+##Combining idnum
 ```{r}
-library(tidyverse)
-library(devtools)
-
-#Reduces columns to country, year, id, idnum_14, and answer
-argentina2 <- argentina %>%
-  gather(column_name, answer, estratopri:formatq) %>%
-  select(pais, year, idnum, idnum_14, column_name, answer)
-
-#Function for reducing columns
-lengthen <- function(country) {
-  country <- country %>%
-  gather(column_name, answer, estratopri:formatq) %>%
-  select(pais, year, idnum, idnum_14, column_name, answer)
+#Combines idnum and idnum_14 with "/"
+combine_id <- function(country) {
+      mutate(country, idnum = ifelse(idnum_14 == '', idnum, paste(idnum,idnum_14,sep = "/")))
 }
 ```
 
 
+##Lengthening the data set
 ```{r}
+library(tidyverse)
+library(devtools)
+library(fs)
 
+#Function for reducing columns
+lengthen <- function(country) {
+  country <- combine_id(country)
+  country <- country %>%
+  gather(column_name, answer, estratopri:formatq) %>%
+  select(pais, year, idnum, column_name, answer)
+}
+
+```
+
+##Applying above functions to every country
+```{r}
+#List of all the countries
+countries <- list(argentina, belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
+
+map(countries, lengthen)
+
+
+lengthen_all <- function(countries){
+  for(x in countries) {
+    lengthen(x)
+  }
+}
+
+lengthen_all(countries)
 ```
 
