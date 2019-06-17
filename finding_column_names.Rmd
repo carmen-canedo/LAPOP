@@ -271,9 +271,22 @@ after_elsalvador <- list_and_factor(after_argentina, ecuador) #194
 after_ecuador <- list_and_factor(after_elsalvador, guatemala) #194
 final_comparison <- list_and_factor(after_ecuador, costa) #193
 
+#Loading in Remaining countries
 
+honduras <- factor_country("125162980Honduras LAPOP merge 2004-2014 v3.0_W_dta.zip")
+jamaica <- factor_country("1518553693Jamaica LAPOP merge 2006-2014 v3.0_W_dta.zip")
+mexico <- factor_country("1467358429Mexico LAPOP merge 2004-2014 v3.0_W_dta.zip")
+nicaragua <- factor_country("420919900Nicaragua LAPOP merge 2004-2014 v3.0_W_dta.zip")
+panama <- factor_country("1909860951Panama LAPOP merge 2004-2014 v3.0_W_dta.zip")
+peru <- factor_country("897206140Peru LAPOP merge 2006-2014 v3.0_W_dta.zip")
+suriname <- factor_country("2028239474Suriname LAPOP merge 2010-2014 v3.0_W_dta.zip")
+usa <- factor_country("1355754260UnitedStates LAPOP merge 2006-2014 v3.0_W_dta.zip")
+uruguay <- factor_country("1222977998Uruguay LAPOP merge 2007-2014 v3.0_W_dta.zip")
+venezuela <- factor_country("1165310382Venezuela LAPOP merge 2007-2014 v3.0_W_dta.zip")
+```
+
+```{r}
 #Now we will compare my final object with Lindsay's
-
 
 #Importing Lindsay's list
 library(readr)
