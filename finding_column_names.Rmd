@@ -1,0 +1,322 @@
+---
+title: "Finding Similar Column Names"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+##Bolivia
+```{r, message=FALSE}
+library(dplyr)
+library(haven)
+
+bolivia_merged <- read_dta("1500779614Bolivia LAPOP merge 2004-2014 v3.0_W_dta.zip")
+
+#Factors Bolivia merged data set
+bolivia_factor <- as_factor(bolivia_merged)
+```
+
+##Duplicated ID
+
+We thought ID was duplicated between id and id_14. Is this true for all countries? What creates a unique identifier we can join prior to 2014. duplicated estropri and prov
+
+```{r, message=FALSE}
+library(dplyr)
+
+#Shows first 6 idnum observations
+bolivia_factor %>%
+  select(idnum) %>%
+  head()
+
+#Shows blank observations before year 2014
+bolivia_factor %>%
+  select(idnum_14) %>%
+  head()
+
+#Shows last 6 
+bolivia_factor %>%
+  select(idnum) %>%
+  tail()
+
+#idnum_14 begins to have observations
+bolivia_factor %>%
+  select(idnum_14) %>%
+  tail()
+```
+
+
+##Unique
+Investigating unique keys for combining data files
+```{r}
+bolivia_factor %>%
+  select(idnum, upm) %>%
+  distinct()
+```
+
+##Brazil
+
+```{r, message=FALSE}
+library(dplyr)
+library(haven)
+
+#Loads in Brazil merged file
+brazil_merged <- read_dta("1058457654Brazil LAPOP merge 2007-2014 v3.0_W_dta.zip")
+
+brazil_factor <- as_factor(brazil_merged)
+```
+
+##Observations
+Some observations are in Spanish, some in Portuguese. Might be because it was only asked in that country.
+
+```{r}
+brazil_factor %>%
+  select(aut1) %>%
+  head()
+
+bolivia_factor %>%
+  select(aut1) %>%
+  head()
+```
+
+There are 753 columns for Bolivia, but 808 in Brazil.
+
+Noticed in columns beginning with b1, observations are a mix of strings (No Aplica, Nada, Mucho) and integers (2-6). Seems to be measuring a scale
+
+```{r}
+brazil_factor %>%
+  select(b2) %>%
+  head()
+```
+
+Should change "No Aplica" to "NA".
+
+
+##Canada
+
+```{r, message=FALSE}
+library(dplyr)
+library(haven)
+
+#Loads in Canada merged file
+canada_merged <- read_dta("257165704Canada LAPOP merge 2006-2014 v3.0_W_dta.zip")
+
+canada_factor <- as_factor(canada_merged)
+```
+
+Only 262 columns, answers and most labels are in Spanish. Some of both are in English later on. Some numbers are written out some and some use digits.
+
+
+
+```{r}
+library(dplyr)
+canada_factor %>%
+  filter(year == 2008) %>%
+  select(cancsize) %>%
+  head()
+#starts in the year 2008
+```
+
+
+##Finding Column Similarities
+Currently beginning to compare common questions that were asked across different countries.
+```{r}
+factor_country <- function(filename) {
+  library(haven)
+  library(dplyr)
+  country_merged <- read_dta(filename)
+  country_factor <- as_factor(country_merged)
+  return(country_factor)
+}
+#Choosing column names by country
+colnames_bol <- attributes(bolivia_factor)$names
+colnames_bra <- attributes(brazil_factor)$names
+
+#Function for comparing column names
+same_column_names <- function(country1, country2) {
+  #Collects names of each column from their respective data set
+  list1 <- attributes(country1)$names 
+  list2 <- attributes(country2)$names
+  #Initializing list
+  firstlist <- vector("list", 800)
+
+  i <- 1
+  n <- 0
+  k <- 1
+
+  #Looping through both column names to find similarities
+  for (name1 in list1) {
+    for (name2 in list2) {
+      if (name1 == name2) {
+        firstlist[[i]] <- name1
+        i <- i + 1
+      }
+    }
+  }
+
+
+  #Getting rid of NULL values
+  for(x in firstlist){
+    if(is.null(x) == FALSE) {
+     n <- n + 1
+    }
+  }
+ 
+  final <- vector("list", n)
+
+  for(x in firstlist) {
+    final[[k]] <- x
+    k <- k + 1
+  }
+
+  #Print result
+  return(final)
+}
+
+same_column_names(factor_country("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip"), factor_country("71618678ElSalvador LAPOP merge 2004-2014 v3.0_W_dta.zip"))
+
+```
+
+Looking for the smallest column number and the largest. 
+
+##Function for as_factor()
+```{r}
+factor_country <- function(filename) {
+  country_merged <- read_dta(filename)
+  country_factor <- as_factor(country_merged)
+  return(country_factor)
+}
+```
+
+##Loading in Countries
+```{r}
+argentina <- factor_country("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip")
+bolivia <- factor_country("1500779614Bolivia LAPOP merge 2004-2014 v3.0_W_dta.zip")
+brazil <- factor_country("1058457654Brazil LAPOP merge 2007-2014 v3.0_W_dta.zip")
+belize <- factor_country("1866361808Belize LAPOP merge 2008-2014 v3.0_W_dta.zip")
+canada <- factor_country("257165704Canada LAPOP merge 2006-2014 v3.0_W_dta.zip")
+chile <- factor_country("1651690880Chile LAPOP merge 2006-2014 v3.0_W_dta.zip")
+colombia <- factor_country("26761406Colombia LAPOP merge 2004-2014 v3.0_W_dta.zip")
+costa <- factor_country("312640706CostaRica LAPOP merge 2004-2014 v3.0_W_dta.zip")
+ecuador <- factor_country("1562314955Ecuador LAPOP merge 2004-2014 v3.0_W_dta.zip")
+elsalvador <- factor_country("71618678ElSalvador LAPOP merge 2004-2014 v3.0_W_dta.zip")
+guatemala <- factor_country("833541857Guatemala LAPOP merge 2004-2014 v3.0_W_dta.zip")
+guyana <- factor_country("1293237393Guyana LAPOP merge 2006-2014 v3.0_W_dta.zip")
+```
+
+##Number of Columns
+Argentina: 513 *
+Belize: 482 *
+Bolivia: 753 *
+Brazil: 808 *
+Canada: 262 *
+Chile: 740 *
+Colombia: 810 *
+Costa Rica: 729
+Ecuador: 695 *
+El Salvador: 685 *
+Guatemala: 699 *
+Guyana: 551 *
+
+```{r}
+canada_brazil <- same_column_names(canada_factor, brazil_factor)
+
+list_and_factor <- function(list1, country2) {
+  #Collects names of each column from their respective data set
+  list2 <- attributes(country2)$names
+  #Initializing list
+  firstlist <- vector("list", 800)
+
+  i <- 1
+  n <- 0
+  k <- 1
+
+  #Looping through both column names to find similarities
+  for (name1 in list1) {
+    for (name2 in list2) {
+      if (name1 == name2) {
+        firstlist[[i]] <- name1
+        i <- i + 1
+      }
+    }
+  }
+
+
+  #Getting rid of NULL values
+  for(x in firstlist){
+    if(is.null(x) == FALSE) {
+     n <- n + 1
+    }
+  }
+ 
+  final <- vector("list", n)
+
+  for(x in firstlist) {
+    final[[k]] <- x
+    k <- k + 1
+  }
+
+  #Print result
+  return(final)
+}
+
+can_bra_bol <- list_and_factor(canada_brazil, bolivia) #199
+can_bra_bol_chi <- list_and_factor(can_bra_bol, chile) #199
+can_bra_bol_chi_col <- list_and_factor(can_bra_bol_chi, colombia) #199
+after_colombia <- list_and_factor(can_bra_bol_chi_col, belize) #197
+after_belize <- list_and_factor(after_colombia, guyana) #196
+after_guyana <- list_and_factor(after_belize, argentina) #194
+after_argentina <- list_and_factor(after_guyana, elsalvador) #194
+after_elsalvador <- list_and_factor(after_argentina, ecuador) #194
+after_ecuador <- list_and_factor(after_elsalvador, guatemala) #194
+final_comparison <- list_and_factor(after_ecuador, costa) #193
+
+
+#Now we will compare my final object with Lindsay's
+
+
+#Importing Lindsay's list
+library(readr)
+lindsay_final <- read_csv("last.csv")
+
+#Function to compare lists
+list_and_list <- function(list1, list2) {
+  #Initializing list
+  firstlist <- vector("list", 800)
+
+  i <- 1
+  n <- 0
+  k <- 1
+
+  #Looping through both column names to find similarities
+  for (name1 in list1) {
+    for (name2 in list2) {
+      if (name1 == name2) {
+        firstlist[[i]] <- name1
+        i <- i + 1
+      }
+    }
+  }
+
+
+  #Getting rid of NULL values
+  for(x in firstlist){
+    if(is.null(x) == FALSE) {
+     n <- n + 1
+    }
+  }
+ 
+  final <- vector("list", n)
+
+  for(x in firstlist) {
+    final[[k]] <- x
+    k <- k + 1
+  }
+
+  #Print result
+  return(final)
+}
+
+all_common_col <- list_and_list(final_comparison, lindsay_final) #152
+
+all_common_col
+```
