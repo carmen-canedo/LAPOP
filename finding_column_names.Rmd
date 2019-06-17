@@ -189,6 +189,7 @@ factor_country <- function(filename) {
 
 ##Loading in Countries
 ```{r}
+library(haven)
 argentina <- factor_country("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip")
 bolivia <- factor_country("1500779614Bolivia LAPOP merge 2004-2014 v3.0_W_dta.zip")
 brazil <- factor_country("1058457654Brazil LAPOP merge 2007-2014 v3.0_W_dta.zip")

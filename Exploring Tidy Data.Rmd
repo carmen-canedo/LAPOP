@@ -1,0 +1,27 @@
+---
+title: "Exploring Tidy Data"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+library(tidyverse)
+library(devtools)
+
+lengthen <- function(country) {
+  country <- country %>%
+  gather(column_name, answer, estratopri:formatq) %>%
+  select(pais, year, idnum, idnum_14, column_name, answer)
+}
+
+argentina2 <- argentina %>%
+  gather(column_name, answer, estratopri:formatq) %>%
+  select(pais, year, idnum, idnum_14, column_name, answer)
+```
+
+
+```{r}
+factor_country()
+```
+
