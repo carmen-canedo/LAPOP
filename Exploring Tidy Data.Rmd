@@ -38,8 +38,9 @@ argentina <- lengthen(argentina)
 library(purrr)
 countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 
-everything <- map_dfr(countries, lengthen)
+#everything <- map_dfr(countries, lengthen)
 
+everything <- everything %>% mutate(common = column_name %in% all_common_col)
 
 #saving individually with map, loooook up table
 
