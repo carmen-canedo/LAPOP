@@ -28,22 +28,37 @@ lengthen <- function(country) {
   select(pais, year, idnum, column_name, answer)
 }
 
+argentina <- lengthen(argentina)
+
 ```
 
 ##Applying above functions to every country
 ```{r}
 #List of all the countries
-countries <- list(argentina, belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
+library(purrr)
+countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 
-map(countries, lengthen)
+everything <- map_dfr(countries, lengthen)
 
 
-lengthen_all <- function(countries){
-  for(x in countries) {
-    lengthen(x)
-  }
-}
+#saving individually with map, loooook up table
 
-lengthen_all(countries)
 ```
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(haven)
+
+lookup <- data.frame()
+column <- attributes(bolivia)$names
+column
+
+
+
+
+
+```
+
 
