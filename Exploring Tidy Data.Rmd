@@ -28,7 +28,10 @@ lengthen <- function(country) {
   select(pais, year, idnum, column_name, answer)
 }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> c26cc21cf225696fd0120e9cd1bda731ad39764b
 
 ```
 
@@ -40,8 +43,11 @@ library(purrr)
 countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 
 everything <- map_dfr(countries, lengthen)
+<<<<<<< HEAD
+=======
 
 #Then adds a column to the merged data set that distinguishes if the question is universal or not
+>>>>>>> c26cc21cf225696fd0120e9cd1bda731ad39764b
 
 everything <- everything %>% mutate(common = column_name %in% all_common_col)
 
