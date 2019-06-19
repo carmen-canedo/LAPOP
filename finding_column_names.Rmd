@@ -333,4 +333,42 @@ list_and_list <- function(list1, list2) {
 all_common_col <- list_and_list(final_comparison, lindsay_final) #152
 
 all_common_col
+
 ```
+
+
+#reading in the 2016-2017
+
+```{r}
+
+venezuela_2016_17  <- factor_country("25258094Venezuela LAPOP AmericasBarometer 2016-17 V1.0_W.dta")
+bolivia_2016_17  <- factor_country("142790203Bolivia LAPOP AmericasBarometer 2017 V1.0_W.dta")
+brazil_2016_17  <- factor_country("780314464Brazil LAPOP AmericasBarometer 2017 V1.0_W (1).dta")
+canada_2016_17  <- factor_country("576555173Canada LAPOP AmericasBarometer 2017 V1.0_W.dta")
+chile_2016_17  <- factor_country("336280178Chile LAPOP AmericasBarometer 2017 V1.0_W.dta")
+colombia_2016_17  <- factor_country("1966987763Colombia LAPOP AmericasBarometer 2016 V1.0_W.dta")
+costa_2016_17  <- factor_country("1636511905CostaRica LAPOP AmericasBarometer 2016 V1.0_W.dta")
+ecuador_2016_17  <- factor_country("1061044693Ecuador LAPOP AmericasBarometer 2016-17 V1.0_W.dta")
+elsalvador_2016_17  <- factor_country("381267663ElSalvador LAPOP AmericasBarometer 2016 V1.0_W.dta")
+guatemala_2016_17  <- factor_country("823416394Guatemala LAPOP AmericasBarometer 2017 V1.0_W.dta")
+guyana_2016_17  <- factor_country("1740874324Guyana LAPOP AmericasBarometer 2016 V1.0_W.dta")
+honduras_2016_17  <- factor_country("1252173714Honduras LAPOP AmericasBarometer 2016 V1.0_W.dta")
+jamaica_2016_17  <- factor_country("428805428Jamaica LAPOP AmericasBarometer 2017 V1.0_W.dta")
+mexico_2016_17  <- factor_country("275973272Mexico LAPOP AmericasBarometer 2017 V1.0_W.dta")
+nicaragua_2016_17  <- factor_country("1862548546Nicaragua LAPOP AmericasBarometer 2016 V1.0_W.dta")
+panama_2016_17  <- factor_country("2078678947Panama LAPOP AmericasBarometer 2017 V1.0_W.dta")
+peru_2016_17  <- factor_country("83639715Peru_LAPOP_AmericasBarometer_2017_V1.1_W.dta")
+usa_2016_17  <- factor_country("2133069031United States LAPOP AmericasBarometer 2017 V1.0_W.dta")
+uruguay_2016_17  <- factor_country("646644681Uruguay LAPOP AmericasBarometer 2017 V1.0_W.dta")
+
+```
+
+Suriname, Belize, Argentina not included because no 2016/17 data
+
+```{r}
+write.csv(usa_2016_17, file = "usa_2016-17.csv")
+```
+
+
+
+
