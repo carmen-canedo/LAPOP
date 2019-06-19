@@ -28,7 +28,7 @@ lengthen <- function(country) {
   select(pais, year, idnum, column_name, answer)
 }
 
-argentina <- lengthen(argentina)
+
 
 ```
 
@@ -52,10 +52,11 @@ everything <- everything %>% mutate(common = column_name %in% all_common_col)
 ```{r}
 library(assertthat)
 library(tidyverse)
+library(assertr)
 #assert_that(is.character(guatemala$estratopri))
 
-guatemala %>%
-  assert_that(n(idnum) == n(estratopri))
+guatemala %>% verify()
+  
                         
                         
 #is_uniq(n(year)

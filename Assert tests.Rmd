@@ -1,0 +1,73 @@
+---
+title: "Assert tests"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(assertr)
+```
+
+#Test for uniqueness of idnum
+
+```{r}
+guatemala %>% assert(is_uniq, idnum)
+```
+
+idnum is not unique, not necessarily people but number of the questionnaire
+
+#Correct   
+```{r}
+estrato <- c("Metropolitana", "Suroriente", "Nororiente", "Noroccidente", "Suroccidente", "Sur")
+
+guatemala %>% assert(in_set(estrato), estratopri)
+
+venezuela %>% assert(in_set(estrato), estratopri)
+
+```
+
+estratopri was as expected, each country has a different unique set of variables
+
+```{r}
+gender <- c("Hombre", "Mujer")
+
+gender_eng <- c("Male", "Female")
+
+guatemala %>% assert(in_set(gender), q1)
+
+guyana %>% assert(in_set(gender_eng), q1)
+```
+
+gender was what was expected, there are only two options, and none of them are left blank
+
+```{r}
+#venezuela %>% verify((q1))
+
+#class(guatemala$q1)
+
+#guat2 <- guatemala %>% group_by(year) %>% mutate(mean_age = mean(q2))
+
+class(brazil_new$q1)
+
+#str(brazil_new)
+str(brazil)
+
+```
+
+
+Everything after idnum_14 is a factor, so no math can be done on any values like age, and can't check if all the columns are characters or numeric values - we have already noticed that there are some numeric values in columns like estratopri for venezuela where it should be a character
+
+```{r}
+q <- c("Not asked in this country or year")
+guyana %>% filter(year == 2006) %>% assert(in_set(q), estratosec)
+
+qs <- c("No se le preguntó en este país o año")
+venezuela %>% filter(year == 2008) %>% assert(in_set(qs), estratosec)
+```
+
+
+should we change the columns that have "Not asked in this country or year" to NA values?
+
+
+
+
