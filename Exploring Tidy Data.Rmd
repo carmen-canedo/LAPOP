@@ -28,34 +28,45 @@ lengthen <- function(country) {
   select(pais, year, idnum, column_name, answer)
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c26cc21cf225696fd0120e9cd1bda731ad39764b
 
 ```
 
 ##Applying above functions to every country
 ```{r}
-#List of all the countries
+#Adds all the countries, in correct tidy format into a large data set
+
 library(purrr)
 countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 
 everything <- map_dfr(countries, lengthen)
+<<<<<<< HEAD
+=======
+
+#Then adds a column to the merged data set that distinguishes if the question is universal or not
+>>>>>>> c26cc21cf225696fd0120e9cd1bda731ad39764b
 
 everything <- everything %>% mutate(common = column_name %in% all_common_col)
 
-#saving individually with map, loooook up table
 
 ```
 
 
 ```{r}
+library(assertthat)
 library(tidyverse)
-library(dplyr)
-library(haven)
+library(assertr)
+#assert_that(is.character(guatemala$estratopri))
 
-lookup <- data.frame()
-column <- attributes(bolivia)$names
-column
-
-
+guatemala %>% verify()
+  
+                        
+                        
+#is_uniq(n(year)
+#class(guatemala$estratopri)
 
 
 
