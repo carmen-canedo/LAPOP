@@ -1,0 +1,15 @@
+---
+title: "Changing NA"
+output: html_notebook
+---
+
+```{r}
+library(sjmisc)
+
+#replaces the columns that have "No se le preguntó en este país o año" with NA
+turn_to_NA <- function(country){
+  country <- set_na(country, na=c("No se le preguntó en este país o año"), as.tag= TRUE)
+}
+
+```
+

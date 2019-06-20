@@ -1,0 +1,96 @@
+---
+title: "Fixing column type"
+output: html_notebook
+---
+
+#reformating the data for factor vs numeric vs chr
+
+```{r}
+library(labelled)
+argentina_og <- read_dta("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip")
+argentina_factor <- factor_country("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip")
+
+```
+
+
+
+
+
+
+##Creating a unique id for each country
+```{r}
+making_uniqueID <- function(country){
+  country <- mutate(country, idnum = ifelse(idnum_14 == '', idnum, paste(idnum,idnum_14,sep = "/")))
+  mutate(country, unique_id = paste(paste(toupper(substr(pais, 1, 3)), substr(year, 3, 4), sep = ''), idnum, sep = "_"))
+}
+
+argentina_test <- making_uniqueID(argentina)
+
+
+argentina_test %>% select(unique_id) %>% distinct
+
+countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
+
+argentina <- making_uniqueID(argentina)
+belize <- making_uniqueID(belize)
+bolivia <- making_uniqueID(bolivia)
+brazil <- making_uniqueID(brazil)
+canada <- making_uniqueID(canada)
+chile <- making_uniqueID(chile)
+colombia <- making_uniqueID(colombia)
+costa <- making_uniqueID(costa)
+ecuador <- making_uniqueID(ecuador)
+elsalvador <- making_uniqueID(elsalvador)
+guatemala <- making_uniqueID(guatemala)
+guyana <- making_uniqueID(guyana)
+honduras <- making_uniqueID(honduras)
+jamaica <- making_uniqueID(jamaica)
+mexico <- making_uniqueID(mexico)
+nicaragua <- making_uniqueID(nicaragua)
+panama <- making_uniqueID(panama)
+peru <- making_uniqueID(peru)
+suriname <- making_uniqueID(suriname)
+usa <- making_uniqueID(usa)
+uruguay <- making_uniqueID(uruguay)
+venezuela <- making_uniqueID(venezuela)
+
+```
+
+
+tested at the end to see if the ids created are actually unique, and they are! :)
+
+
+```{r}
+library(dplyr)
+
+#had to unlist the list of common column names in order to use it to shrink the size of each country
+new_col <- unlist(all_common_col)
+
+shrink <- function(country){
+  country[, new_col]
+}
+
+#the values that come out display "haven_labelled" as the type
+class(argentina_og$q2)
+#displays factor as the type
+class(argentina_factor$q2)
+
+#creates a new table of all the numeric values that were accounted for in argentina_og  - the dataset before being factored
+#shows every value as being numeric except for idnum_14
+#this includes q2 - which above showed as being of type "haven_labelled"
+arg_nums <- unlist(lapply(argentina_og, is.numeric))
+argentina_numeric <- argentina_og[,arg_nums]
+
+#creates a new table of the numeric values only from argentina_factor, not all the numeric values though
+arg_fac_num <- unlist(lapply(argentina_factor, is.numeric))
+argentina_is_factor_num <- argentina_factor[, arg_fac_num]
+
+
+#factor with all numeric values, not including ordinal values
+arg_age <- argentina_factor %>% select(q2)
+argentina_is_factor_num <- cbind(arg_age, argentina_is_factor_num)
+
+
+
+```
+

@@ -41,11 +41,10 @@ guyana %>% assert(in_set(gender_eng), q1)
 gender was what was expected, there are only two options, and none of them are left blank
 
 ```{r}
-#venezuela %>% verify((q1))
+#used to show that the values are not numeric and math can't be done one them
+class(guatemala$q1)
 
-#class(guatemala$q1)
-
-#guat2 <- guatemala %>% group_by(year) %>% mutate(mean_age = mean(q2))
+guat2 <- guatemala %>% group_by(year) %>% mutate(mean_age = mean(q2))
 
 class(brazil_new$q1)
 
@@ -66,10 +65,19 @@ venezuela %>% filter(year == 2008) %>% assert(in_set(qs), estratosec)
 ```
 
 
-should we change the columns that have "Not asked in this country or year" to NA values?
-idnums aren't different
+should we change the columns that have "Not asked in this country or year" to NA values? - yes
+  add note - with lookup table
+
 can't test other columns after idnum_14 because they are factors
+  as factor - only do each section that we need to
+  
 What should we do about ordinal number scale - numbers mixed with chr
+
+select verb - to figure out which is which before factoring
+
+Country associated with a number - ref table, changing idnum - mimic 2016/2017 - mutate and assert
+
+R for data science on join
 
 
 
