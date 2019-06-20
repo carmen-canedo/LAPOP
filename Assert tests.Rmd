@@ -67,6 +67,9 @@ venezuela %>% filter(year == 2008) %>% assert(in_set(qs), estratosec)
 
 
 should we change the columns that have "Not asked in this country or year" to NA values?
+idnums aren't different
+can't test other columns after idnum_14 because they are factors
+What should we do about ordinal number scale - numbers mixed with chr
 
 
 
