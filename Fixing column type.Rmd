@@ -29,30 +29,6 @@ argentina_test <- making_uniqueID(argentina)
 
 argentina_test %>% select(unique_id) %>% distinct
 
-countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
-
-argentina <- making_uniqueID(argentina)
-belize <- making_uniqueID(belize)
-bolivia <- making_uniqueID(bolivia)
-brazil <- making_uniqueID(brazil)
-canada <- making_uniqueID(canada)
-chile <- making_uniqueID(chile)
-colombia <- making_uniqueID(colombia)
-costa <- making_uniqueID(costa)
-ecuador <- making_uniqueID(ecuador)
-elsalvador <- making_uniqueID(elsalvador)
-guatemala <- making_uniqueID(guatemala)
-guyana <- making_uniqueID(guyana)
-honduras <- making_uniqueID(honduras)
-jamaica <- making_uniqueID(jamaica)
-mexico <- making_uniqueID(mexico)
-nicaragua <- making_uniqueID(nicaragua)
-panama <- making_uniqueID(panama)
-peru <- making_uniqueID(peru)
-suriname <- making_uniqueID(suriname)
-usa <- making_uniqueID(usa)
-uruguay <- making_uniqueID(uruguay)
-venezuela <- making_uniqueID(venezuela)
 
 ```
 

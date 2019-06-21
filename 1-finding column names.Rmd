@@ -365,10 +365,6 @@ uruguay_2016_17  <- factor_country("646644681Uruguay LAPOP AmericasBarometer 201
 
 Suriname, Belize, Argentina not included because no 2016/17 data
 
-```{r}
-write.csv(usa_2016_17, file = "usa_2016-17.csv")
-```
-
 
 
 

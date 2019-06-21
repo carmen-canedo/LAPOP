@@ -1,0 +1,13 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+new_col <- unlist(all_common_col)
+
+shrink <- function(country){
+  country[, new_col]
+}
+```
+

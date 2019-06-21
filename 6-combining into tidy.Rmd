@@ -5,13 +5,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-##Combining idnum
-```{r}
-#Combines idnum and idnum_14 with "/"
-combine_id <- function(country) {
-      mutate(country, idnum = ifelse(idnum_14 == '', idnum, paste(idnum,idnum_14,sep = "/")))
-}
-```
+
 
 
 ##Lengthening the data set
@@ -22,7 +16,7 @@ library(fs)
 
 #Function for reducing columns
 lengthen <- function(country) {
-  country <- combine_id(country)
+  country <- making_uniqueID(country)
   country <- country %>%
   gather(column_name, answer, estratopri:formatq) %>%
   select(pais, year, idnum, column_name, answer)
