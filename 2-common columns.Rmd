@@ -1,0 +1,41 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(purrr)
+library(dplyr)
+new_col <- unlist(all_common_col)
+
+shrink <- function(country){
+  country <- country[, new_col]
+  return(country)
+}
+
+
+argentina <- shrink(argentina)
+belize <- shrink(belize)
+bolivia <- shrink(bolivia)
+brazil <- shrink(brazil)
+canada <- shrink(canada)
+chile <- shrink(chile)
+colombia <- shrink(colombia)
+costa <- shrink(costa)
+ecuador <- shrink(ecuador)
+elsalvador <- shrink(elsalvador)
+guatemala <- shrink(guatemala)
+guyana <- shrink(guyana)
+honduras <- shrink(honduras)
+jamaica <- shrink(jamaica)
+mexico <- shrink(mexico)
+nicaragua <- shrink(nicaragua)
+panama <- shrink(panama)
+peru <- shrink(peru)
+suriname <- shrink(suriname)
+usa <- shrink(usa)
+uruguay <- shrink(uruguay)
+venezuela <- shrink(venezuela)
+```
+
+shrink to any of the number of columns that are wanted, needs to happen before the columns are edited, with make everything take less time

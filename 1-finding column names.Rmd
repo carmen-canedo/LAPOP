@@ -332,7 +332,9 @@ list_and_list <- function(list1, list2) {
 
 all_common_col <- list_and_list(final_comparison, lindsay_final) #152
 
-all_common_col
+
+common_2016_2017_and_before <- list_and_list(all_common_col, final_sixteen)
+common_2016_2017_and_before
 
 ```
 
@@ -361,9 +363,33 @@ peru_2016_17  <- factor_country("83639715Peru_LAPOP_AmericasBarometer_2017_V1.1_
 usa_2016_17  <- factor_country("2133069031United States LAPOP AmericasBarometer 2017 V1.0_W.dta")
 uruguay_2016_17  <- factor_country("646644681Uruguay LAPOP AmericasBarometer 2017 V1.0_W.dta")
 
+
 ```
 
 Suriname, Belize, Argentina not included because no 2016/17 data
+
+```{r}
+venezuela_and_brazil <- same_column_names(venezuela_2016_17, bolivia_2016_17)
+second <- list_and_factor(venezuela_and_brazil, brazil_2016_17)
+third <- list_and_factor(second, canada_2016_17)
+fourth <- list_and_factor(third, chile_2016_17)
+fifth <- list_and_factor(fourth, colombia_2016_17)
+sixth <- list_and_factor(fifth, costa_2016_17)
+seventh <- list_and_factor(sixth, ecuador_2016_17)
+eigth <- list_and_factor(seventh, elsalvador_2016_17)
+ninth <- list_and_factor(eigth, guatemala_2016_17)
+tenth <- list_and_factor(ninth, guyana_2016_17)
+el <- list_and_factor(tenth, honduras_2016_17)
+tw <- list_and_factor(el, jamaica_2016_17)
+thir <- list_and_factor(tw, mexico_2016_17)
+fourt <- list_and_factor(thir, nicaragua_2016_17)
+fif <- list_and_factor(fourt, panama_2016_17)
+six <- list_and_factor(fif, peru_2016_17)
+sev <- list_and_factor(six, usa_2016_17)
+common_in_2016 <- list_and_factor(sev, uruguay_2016_17)
+
+common_in_2016
+```
 
 
 
