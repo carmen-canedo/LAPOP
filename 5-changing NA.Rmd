@@ -1,6 +1,8 @@
 ---
 title: "Changing NA"
 output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r}
@@ -11,8 +13,11 @@ turn_to_NA <- function(country){
   country <- set_na(country, na=c("No se le preguntó en este país o año"), as.tag= TRUE)
 }
 
+<<<<<<< HEAD
 every <- map_dfr(countries, turn_to_NA)
 
+=======
+>>>>>>> 6a4ad0c9da6b8053b96e9d5f9df9a25b7db104af
 argentina <- turn_to_NA(argentina)
 belize <- turn_to_NA(belize)
 bolivia <- turn_to_NA(bolivia)

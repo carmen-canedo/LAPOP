@@ -345,7 +345,7 @@ common_2016_2017_and_before
 
 venezuela_2016_17  <- factor_country("25258094Venezuela LAPOP AmericasBarometer 2016-17 V1.0_W.dta")
 bolivia_2016_17  <- factor_country("142790203Bolivia LAPOP AmericasBarometer 2017 V1.0_W.dta")
-brazil_2016_17  <- factor_country("780314464Brazil LAPOP AmericasBarometer 2017 V1.0_W (1).dta")
+brazil_2016_17  <- factor_country("780314464Brazil LAPOP AmericasBarometer 2017 V1.0_W.dta")
 canada_2016_17  <- factor_country("576555173Canada LAPOP AmericasBarometer 2017 V1.0_W.dta")
 chile_2016_17  <- factor_country("336280178Chile LAPOP AmericasBarometer 2017 V1.0_W.dta")
 colombia_2016_17  <- factor_country("1966987763Colombia LAPOP AmericasBarometer 2016 V1.0_W.dta")
