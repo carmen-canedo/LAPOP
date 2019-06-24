@@ -30,9 +30,10 @@ lengthen <- function(country) {
 #Adds all the countries, in correct tidy format into a large data set
 
 library(purrr)
-countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
+countries <- list(uruguay, venezuela)
 
-everything <- map_df(countries, lengthen)
+
+uruguay_and_venezuela <- map_df(countries, lengthen)
 
 
 #Then adds a column to the merged data set that distinguishes if the question is universal or not
@@ -56,8 +57,62 @@ every_2016 <- map_dfr(countries_2016, shrink)
 ```{r}
 library(tidyr)
 library(tidyverse)
+library(dplyr)
 
-every <- spread(everything, answer, column_name)
+
+#argentina_and_belize <- argentina_and_belize %>% spread(key = column_name, value = answer)
+
+#bolivia_and_brazil <- bolivia_and_brazil %>% group_by(column_name) %>% mutate(grouped_id = row_number()) 
+#bolivia_and_brazil %>% spread(key = column_name, value = answer) %>% select(-grouped_id)
+
+
+
+try <- function(x){
+  x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
+  x %>% spread(key = column_name, value = answer) %>% select(-grouped_id)
+}
+#skipped because Error: Each row of output must be identified by a unique combination of keys
+
+#canada_and_chile <- try(canada_and_chile)
+#bolivia_and_brazil <- try(bolivia_and_brazil)
+
+#colombia_and_costa <- try(colombia_and_costa)
+
+#ecuador_and_elsalvador <- try(ecuador_and_elsalvador)
+#guatemala_and_guyana <- try(guatemala_and_guyana)
+
+#first_four <- bind_rows(argentina_and_belize, bolivia_and_brazil)
+
+#second_four <- bind_rows(canada_and_chile, colombia_and_costa)
+#first_and_second <- bind_rows(first_four, second_four)
+
+#third_four <- bind_rows(ecuador_and_elsalvador, guatemala_and_guyana)
+
+#honduras_and_jamaica <- try(honduras_and_jamaica)
+#mexico_and_nicaragua <- try(mexico_and_nicaragua)
+
+#fourth_four <- bind_rows(honduras_and_jamaica, mexico_and_nicaragua)
+
+#third_and_fourth <- bind_rows(third_four, fourth_four)
+
+#panama_and_peru <- try(panama_and_peru)
+ 
+#suriname_and_usa <- try(suriname_and_usa)
+
+#fifth_four <- bind_rows(panama_and_peru, suriname_and_usa)
+
+#uruguay_and_venezuela <- try(uruguay_and_venezuela)
+
+#last <- bind_rows(fifth_four, uruguay_and_venezuela)
+
+#first_half <- bind_rows(first_and_second, third_and_fourth)
+
+#last_combine <- bind_rows(first_half, last)
+
+write_csv(last_combine, "combined_tidy.csv")
+
+
+
 ```
 
 
