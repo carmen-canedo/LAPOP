@@ -11,6 +11,7 @@ turn_to_NA <- function(country){
   country <- set_na(country, na=c("No se le preguntó en este país o año"), as.tag= TRUE)
 }
 
+every <- map_dfr(countries, turn_to_NA)
 
 argentina <- turn_to_NA(argentina)
 belize <- turn_to_NA(belize)
@@ -34,6 +35,7 @@ suriname <- turn_to_NA(suriname)
 usa <- turn_to_NA(usa)
 uruguay <- turn_to_NA(uruguay)
 venezuela <- turn_to_NA(venezuela)
+
 
 
 ```
