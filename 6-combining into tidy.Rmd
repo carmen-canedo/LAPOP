@@ -37,7 +37,7 @@ everything <- map_df(countries, lengthen)
 
 #Then adds a column to the merged data set that distinguishes if the question is universal or not
 
-everything <- everything %>% mutate(common = column_name %in% all_common_col)
+#everything <- everything %>% mutate(common = column_name %in% all_common_col)
 
 
 ```
