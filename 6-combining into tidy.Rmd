@@ -57,7 +57,7 @@ every_2016 <- map_dfr(countries_2016, shrink)
 library(tidyr)
 library(tidyverse)
 
-every <- pi(everything)
+every <- spread(everything, answer, column_name)
 ```
 
 
