@@ -35,6 +35,7 @@ jamaica <- making_uniqueID(jamaica)
 mexico <- making_uniqueID(mexico)
 nicaragua <- making_uniqueID(nicaragua)
 panama <- making_uniqueID(panama)
+paraguay <- making_uniqueID(paraguay)
 peru <- making_uniqueID(peru)
 suriname <- making_uniqueID(suriname)
 usa <- making_uniqueID(usa)
@@ -46,8 +47,6 @@ venezuela <- making_uniqueID(venezuela)
 
 ```
 
-
 tested at the end to see if the ids created are actually unique, and they are! :)
-```
 
 

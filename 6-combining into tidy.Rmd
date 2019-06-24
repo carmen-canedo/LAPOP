@@ -32,8 +32,9 @@ lengthen <- function(country) {
 library(purrr)
 countries <- list(uruguay, venezuela)
 
-
 uruguay_and_venezuela <- map_df(countries, lengthen)
+
+paraguay <- lengthen(paraguay)
 
 
 #Then adds a column to the merged data set that distinguishes if the question is universal or not
@@ -46,11 +47,9 @@ uruguay_and_venezuela <- map_df(countries, lengthen)
 ```{r}
 library(purrr)
 
-countries_2016 <- list(venezuela_2016_17, bolivia_2016_17, brazil_2016_17, canada_2016_17, chile_2016_17, colombia_2016_17,costa_2016_17, ecuador_2016_17, elsalvador_2016_17, guatemala_2016_17, guyana_2016_17, honduras_2016_17, jamaica_2016_17, mexico_2016_17, nicaragua_2016_17, panama_2016_17, peru_2016_17, usa_2016_17, uruguay_2016_17)
+countries_2016 <- list(venezuela_2016_17, bolivia_2016_17, brazil_2016_17, canada_2016_17, chile_2016_17, colombia_2016_17,costa_2016_17, ecuador_2016_17, elsalvador_2016_17, guatemala_2016_17, guyana_2016_17, honduras_2016_17, jamaica_2016_17, mexico_2016_17, nicaragua_2016_17, panama_2016_17, paraguay_2016_17, peru_2016_17, usa_2016_17, uruguay_2016_17)
 
 every_2016 <- map_dfr(countries_2016, shrink)
-
-
 
 ```
 
@@ -59,18 +58,14 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 
-
-#argentina_and_belize <- argentina_and_belize %>% spread(key = column_name, value = answer)
-
-#bolivia_and_brazil <- bolivia_and_brazil %>% group_by(column_name) %>% mutate(grouped_id = row_number()) 
-#bolivia_and_brazil %>% spread(key = column_name, value = answer) %>% select(-grouped_id)
-
-
-
 try <- function(x){
   x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
   x %>% spread(key = column_name, value = answer) %>% select(-grouped_id)
 }
+
+# argentina_and_belize <- argentina_and_belize %>%
+#   spread(key = column_name, value = answer)
+
 #skipped because Error: Each row of output must be identified by a unique combination of keys
 
 #canada_and_chile <- try(canada_and_chile)
@@ -103,7 +98,11 @@ try <- function(x){
 
 #uruguay_and_venezuela <- try(uruguay_and_venezuela)
 
-#last <- bind_rows(fifth_four, uruguay_and_venezuela)
+#sixth_four <- bind_rows(fifth_four, uruguay_and_venezuela)
+
+#paraguay <- try(paraguay)
+
+#last <- bind_rows(sixth_four, paraguay)
 
 #first_half <- bind_rows(first_and_second, third_and_fourth)
 

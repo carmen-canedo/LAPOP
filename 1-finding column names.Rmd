@@ -202,6 +202,7 @@ ecuador <- factor_country("1562314955Ecuador LAPOP merge 2004-2014 v3.0_W_dta.zi
 elsalvador <- factor_country("71618678ElSalvador LAPOP merge 2004-2014 v3.0_W_dta.zip")
 guatemala <- factor_country("833541857Guatemala LAPOP merge 2004-2014 v3.0_W_dta.zip")
 guyana <- factor_country("1293237393Guyana LAPOP merge 2006-2014 v3.0_W_dta.zip")
+paraguay <- factor_country("450650714Paraguay LAPOP merge 2006-2014 v3.0_W_dta.zip") #added 6/24
 ```
 
 ##Number of Columns
@@ -217,6 +218,7 @@ Ecuador: 695 *
 El Salvador: 685 *
 Guatemala: 699 *
 Guyana: 551 *
+Paraguay: 553
 
 ```{r}
 canada_brazil <- same_column_names(canada_factor, brazil_factor)
@@ -269,7 +271,8 @@ after_guyana <- list_and_factor(after_belize, argentina) #194
 after_argentina <- list_and_factor(after_guyana, elsalvador) #194
 after_elsalvador <- list_and_factor(after_argentina, ecuador) #194
 after_ecuador <- list_and_factor(after_elsalvador, guatemala) #194
-final_comparison <- list_and_factor(after_ecuador, costa) #193
+after_guatemala <- list_and_factor(after_ecuador, costa) #193
+final_comparison <- list_and_factor(after_guatemala, paraguay) #193
 
 #Loading in Remaining countries
 
@@ -359,6 +362,7 @@ jamaica_2016_17  <- factor_country("428805428Jamaica LAPOP AmericasBarometer 201
 mexico_2016_17  <- factor_country("275973272Mexico LAPOP AmericasBarometer 2017 V1.0_W.dta")
 nicaragua_2016_17  <- factor_country("1862548546Nicaragua LAPOP AmericasBarometer 2016 V1.0_W.dta")
 panama_2016_17  <- factor_country("2078678947Panama LAPOP AmericasBarometer 2017 V1.0_W.dta")
+paraguay_2016_17 <- factor_country("1311870907Paraguay LAPOP AmericasBarometer 2016 V1.0 W.dta")
 peru_2016_17  <- factor_country("83639715Peru_LAPOP_AmericasBarometer_2017_V1.1_W.dta")
 usa_2016_17  <- factor_country("2133069031United States LAPOP AmericasBarometer 2017 V1.0_W.dta")
 uruguay_2016_17  <- factor_country("646644681Uruguay LAPOP AmericasBarometer 2017 V1.0_W.dta")
@@ -386,9 +390,10 @@ fourt <- list_and_factor(thir, nicaragua_2016_17)
 fif <- list_and_factor(fourt, panama_2016_17)
 six <- list_and_factor(fif, peru_2016_17)
 sev <- list_and_factor(six, usa_2016_17)
-common_in_2016 <- list_and_factor(sev, uruguay_2016_17)
+eigh <- list_and_factor(sev, uruguay_2016_17)
+common_in_2016 <- list_and_factor(eigh, paraguay_2016_17)
 
-common_in_2016
+common_in_2016 #49
 ```
 
 
