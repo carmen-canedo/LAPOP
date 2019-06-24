@@ -39,3 +39,35 @@ venezuela <- shrink(venezuela)
 ```
 
 shrink to any of the number of columns that are wanted, needs to happen before the columns are edited, with make everything take less time
+
+```{r}
+
+new_col <- unlist(common_in_2016)
+
+shrink <- function(country){
+  country <- country[, new_col]
+  return(country)
+}
+
+
+venezuela_2016_17  <- shrink(venezuela_2016_17)
+bolivia_2016_17  <- shrink(bolivia_2016_17)
+brazil_2016_17  <- shrink(brazil_2016_17)
+canada_2016_17  <- shrink(canada_2016_17)
+chile_2016_17  <- shrink(chile_2016_17)
+colombia_2016_17  <- shrink(colombia_2016_17)
+costa_2016_17  <- shrink(costa_2016_17)
+ecuador_2016_17  <- shrink(ecuador_2016_17)
+elsalvador_2016_17  <- shrink(elsalvador_2016_17)
+guatemala_2016_17  <- shrink(guatemala_2016_17)
+guyana_2016_17  <- shrink(guyana_2016_17)
+honduras_2016_17  <- shrink(honduras_2016_17)
+jamaica_2016_17  <- shrink(jamaica_2016_17)
+mexico_2016_17  <- shrink(mexico_2016_17)
+nicaragua_2016_17  <- shrink(nicaragua_2016_17)
+panama_2016_17  <- shrink(panama_2016_17)
+peru_2016_17  <- shrink(peru_2016_17)
+usa_2016_17  <- shrink(usa_2016_17)
+uruguay_2016_17  <- shrink(uruguay_2016_17)
+```
+

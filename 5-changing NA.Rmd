@@ -35,7 +35,6 @@ usa <- turn_to_NA(usa)
 uruguay <- turn_to_NA(uruguay)
 venezuela <- turn_to_NA(venezuela)
 
-every_152 <- map_df(countries, as_factor)
 
 ```
 
