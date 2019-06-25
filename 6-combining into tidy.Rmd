@@ -74,13 +74,19 @@ uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
 
 paraguay <- lengthen(paraguay)
 
-
+countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
+tidy_data <- map_dfr(countries, lengthen)
 #Then adds a column to the merged data set that distinguishes if the question is universal or not
 
 #everything <- everything %>% mutate(common = column_name %in% all_common_col)
 
 
 ```
+
+```{r}
+write_csv(tidy_data, "tidy_data.csv")
+```
+
 
 ```{r}
 library(purrr)
