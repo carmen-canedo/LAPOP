@@ -124,8 +124,11 @@ factor_country <- function(filename) {
   library(haven)
   library(dplyr)
   country_merged <- read_dta(filename)
-  country_factor <- as_factor(country_merged)
-  return(country_factor)
+  nums <- country_merged %>% select(year, q2)
+  other <- country_merged %>% select(-year,-q2)
+  other <- as_factor(other)
+  other <- cbind(nums, other)
+  other
 }
 #Choosing column names by country
 colnames_bol <- attributes(bolivia_factor)$names
@@ -393,9 +396,8 @@ sev <- list_and_factor(six, usa_2016_17)
 eigh <- list_and_factor(sev, uruguay_2016_17)
 common_in_2016 <- list_and_factor(eigh, paraguay_2016_17)
 
-common_in_2016 #49
+#common_in_2016 #49
 ```
-
 
 
 
