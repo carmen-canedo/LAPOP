@@ -156,7 +156,14 @@ write_csv(last_combine, "combined_tidy.csv")
 
 
 
+
+
 ```
 
 
+```{r}
+library(haven)
+attributes(last_combine$q2)
+
+```
 
