@@ -17,7 +17,7 @@ library(fs)
 #Function for reducing columns
 lengthen <- function(country) {
   country <- country %>%
-  gather(column_name, answer, estratopri:formatq) %>%
+  gather(column_name, answer, estratopri:gi7r) %>%
   select(pais, year, unique_id, column_name, answer)
   return(country)
 }
@@ -160,7 +160,7 @@ write_csv(last_combine, "combined_tidy.csv")
 
 ```{r}
 library(haven)
-attributes(last_combine$q2)
+attributes(argentina_and_belize$pais)
 
 ```
 

@@ -291,6 +291,33 @@ uruguay <- factor_country("1222977998Uruguay LAPOP merge 2007-2014 v3.0_W_dta.zi
 venezuela <- factor_country("1165310382Venezuela LAPOP merge 2007-2014 v3.0_W_dta.zip")
 ```
 
+
+```{r}
+firstlist <- vector("list", 150)
+pais <- attributes(argentina$pais)
+newp <- pais[2]$label 
+newp <- pais$label
+
+year <- attributes(argentina$year)
+year <- year$label
+t <- c(newp, year)
+t[1]
+class(t)
+
+
+x <- 6
+
+
+for(x in length(all_common_col){
+  new <- attributes(argentina$all_common_col[x])
+}
+new <- attributes(argentina$pais)
+
+```
+
+
+
+
 ```{r}
 #Now we will compare my final object with Lindsay's
 
@@ -336,11 +363,13 @@ list_and_list <- function(list1, list2) {
   return(final)
 }
 
+lindsay_final <- read_csv("last.csv")
+
 all_common_col <- list_and_list(final_comparison, lindsay_final) #152
 
 
-common_2016_2017_and_before <- list_and_list(all_common_col, final_sixteen)
-common_2016_2017_and_before
+#common_2016_2017_and_before <- list_and_list(all_common_col, final_sixteen)
+#common_2016_2017_and_before
 
 ```
 
