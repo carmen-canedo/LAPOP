@@ -17,10 +17,12 @@ library(fs)
 #Function for reducing columns
 lengthen <- function(country) {
   country <- country %>%
+  select(-strata) %>%
   gather(column_name, answer, estratopri:gi7r) %>%
   select(pais, year, unique_id, column_name, answer)
   return(country)
 }
+
 
 
 ```
@@ -104,10 +106,10 @@ library(dplyr)
 
 try <- function(x){
   x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
-  x %>% spread(key = column_name, value = answer) %>% select(-grouped_id)
+  x %>% spread(key = questions, value = answer) %>% select(-grouped_id)
 }
 
-argentina_and_belize <- argentina_and_belize %>% spread(key = column_name, value = answer)
+#argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
 
 #skipped because Error: Each row of output must be identified by a unique combination of keys
 
@@ -158,9 +160,4 @@ write_csv(last_combine, "combined_tidy.csv")
 ```
 
 
-```{r}
-library(haven)
-attributes(argentina_and_belize$pais)
-
-```
 
