@@ -1,0 +1,96 @@
+---
+title: "Fixing Ordinal Values"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+##Exploring structure of columns with ordinal values
+Looking to see what the structure of the factored version of Argentina shows for likert scale.
+
+```{r}
+attributes(argentina$d1)
+```
+This column uses 10-point scalewith additional opt-out answers "No Sabe" and "No Responde". 2-9 are numeric, but 1 and 10 have anchors that are text. This is what hinders graphing in Tableau.
+
+Will look for columns that use different number scales before attempting to edit the anchors.
+
+```{r}
+attributes(argentina$b1)
+```
+
+This column has 7-point scale, from "Nada" (1) to "Mucho" (7). Again, 2-6 numeric, but text anchors. Also includes "No Sabe" and "No repsonde". Should these later be turned into NA, or should it remain separate?
+
+```{r}
+attributes(argentina$b31)
+```
+
+7-point scale.
+
+I was concerned that there could be a wide variety of anchors, but I remembered that the questionnaires used provide cards for all likert scale questions. There are avaiable on the (LAPOP Website)[https://www.vanderbilt.edu/lapop/core-surveys.php]
+
+I will be using the Core Questionnaires to get the possible answers.
+
+##Possible Scale Outcomes
+Not sure about capitalizations of the words.
+
+#2004
+Card A:
+1 = "Not at all", 7 = "A lot"
+1 = "Nada", 7 = "Mucho"
+
+Card B:
+1 = "Strongly Disagree", 7 = "Strongly Agree"
+1 = "Muy de Desacuerdo", 7 = "Muy de Acuerdo"
+
+Card C:
+1 = "Firmly Disapprove", 10 = "Firmly Approves"
+1 = "Desaprueba Firmemente", 10 = "Aprueba Firmememnte"
+
+Card D:
+1 = "Very Corrupt", 10 = "Very Honest"
+1 = "Muy Corruptos", 10 = "Muy Honrados"
+
+Card E:
+1 = "Left", 10 = "Right"
+1 = "Izquierda", 10 = "Derecha"
+
+#2006
+Cards A and B the same
+Card 1 = Card E
+No D
+Card C (English only):
+1 = "Strongly Disapprove", 10 = "Strongly Approve"
+
+#2008
+Card 1 = Card E
+A - C same
+Card D:
+1 = "Worst Life Possible", 10 = "Best Life Possible"
+0 = "Peor Vida Posible", 10 = "Mejor Vida Posible"
+
+This is weird that they did different scales for different languages?? Not sure why this would be necessary, and also they changed it in the following year?
+
+#2010
+Card A:
+0 = "Worst Life Possible", 10 = "Best Life Possible"
+0 = "La Peor Vida Posible", 10 = "La Mejor Vida Posible"
+
+Card B:
+Added in addition to previous Left-Right scales
+1 = "Liberal", 10 = "Conservative"
+1 = "Liberal", 10 = "Conservador"
+
+#2012
+Card E:
+1 = "Defends the Rich", 10 = "Defends the poor"
+1 = "Defiende a los ricos", 10 = "Defiende a los pobres"
+
+#2014
+No differences from above.
+
+#2016/17
+Card N:
+1 = "Environment is priority", 10 = "Economic growth is priority"
+1 = "Medio ambiente es prioridad", 10 = "Crecimiento económico es prioridad"
+
