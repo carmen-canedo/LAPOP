@@ -14,13 +14,31 @@ library(tidyverse)
 library(devtools)
 library(fs)
 
+long_questions <- function(country, column_name){
+  i <- 1
+  new_list <- rep(NA, length(column_name))
+  for(x in column_name){
+    spot <- x
+    new <- attributes(argentina[[spot]])$label
+    new_list[i] <- new
+    i <- i + 1
+  }
+  new_list
+}
+
 #Function for reducing columns
 lengthen <- function(country) {
   country <- country %>%
-  gather(column_name, answer, estratopri:gi7r) %>%
-  select(pais, year, unique_id, column_name, answer)
+  select(-strata) %>%
+  gather(column_name, answer, estratopri:gi7r)
+  column <- country %>% select(column_name)
+  questions <- long_questions(country, column)
+  country <- country %>% mutate(questions)
+  select(pais, year, unique_id, column_name, answer, questions)
   return(country)
 }
+
+argentina <- lengthen(argentina)
 
 
 ```
@@ -95,6 +113,7 @@ library(tidyverse)
 library(dplyr)
 
 try <- function(x){
+<<<<<<< HEAD
   x <- x %>% 
     group_by(column_name) %>%
     mutate(grouped_id = row_number())
@@ -105,6 +124,13 @@ try <- function(x){
 
 argentina_and_belize <- argentina_and_belize %>%
   spread(key = column_name, value = answer)
+=======
+  x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
+  x %>% spread(key = questions, value = answer) %>% select(-grouped_id)
+}
+
+#argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
+>>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
 
 #skipped because Error: Each row of output must be identified by a unique combination of keys
 
@@ -153,8 +179,11 @@ write_csv(last_combine, "combined_tidy.csv")
 ```
 
 
+<<<<<<< HEAD
 ```{r}
 library(haven)
 attributes(argentina_and_belize$pais)
 ```
+=======
+>>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
 

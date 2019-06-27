@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+#has to happen after five and before 6 
+questions <- rep(NA,149)
+pais <- attributes(argentina$pais)
+
+newp <- pais[2]$label 
+newp <- pais$label
+
+questions[1] <- newp
+year <- attributes(argentina$year)
+year <- year$label
+questions[2] <- year
+
+x <- 6
+i <- 3
+
+spot <- all_common_col[[x]]
+new <- attributes(argentina[[spot]])$label
+new
+x <- x + 1
+questions[i] <- new
+i <- i + 1
+
+while(x<152){
+  spot <- all_common_col[[x]]
+  new <- attributes(argentina[[spot]])$label
+  x <- x + 1
+  questions[i] <- new
+  i <- i + 1
+  
+}
+questions[149] <- "Unique ID"
+
+
+```
+
+```{r}
+library(tidyverse)
+library(devtools)
+library(fs)
+
+long_questions <- function(country, column_name){
+  i <- 1
+  new_list <- rep(NA, length(column_name))
+  for(x in column_name){
+    spot <- x
+    new <- attributes(argentina[[spot]])$label
+    new_list[i] <- new
+    i <- i + 1
+  }
+  new_list
+}
+
+#Function for reducing columns
+lengthen <- function(country) {
+  country <- country %>%
+  select(-strata) %>%
+  gather(column_name, answer, estratopri:gi7r)
+  column <- country %>% select(column_name)
+  questions <- long_questions(country, column)
+  country <- country %>% mutate(questions)
+  select(pais, year, unique_id, column_name, answer, questions)
+  return(country)
+}
+
+argentina <- lengthen(argentina)
+
+
+```
+
+

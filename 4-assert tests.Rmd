@@ -29,13 +29,23 @@ venezuela %>% assert(in_set(estrato), estratopri)
 estratopri was as expected, each country has a different unique set of variables
 
 ```{r}
-gender <- c("Hombre", "Mujer")
+#gender <- c("Hombre", "Mujer")
+#
+#gender_eng <- c("Male", "Female")
 
-gender_eng <- c("Male", "Female")
+#guatemala %>% assert(in_set(gender), q1)
 
-guatemala %>% assert(in_set(gender), q1)
+#guyana %>% assert(in_set(gender_eng), q1)
 
-guyana %>% assert(in_set(gender_eng), q1)
+
+na.test <-  function (x) {
+  w <- sapply(x, function(x)all(is.na(x)))
+  if (any(w)) {
+    stop(paste("All NA in columns", paste(which(w), collapse=", ")))
+  }
+}
+
+na.test(argentina)
 ```
 
 gender was what was expected, there are only two options, and none of them are left blank
