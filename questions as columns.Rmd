@@ -1,17 +1,25 @@
 ---
-title: "R Notebook"
+title: "Questions as columns"
 output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
 
+This will add the full questions to the column names. This should happen between steps 5 and 6.
 ```{r}
-#has to happen after five and before 6 
+#Creating a list of 149 empty NA values
 questions <- rep(NA,149)
+
+#Collecting attributes of Argentina's column, pais, into separate object
 pais <- attributes(argentina$pais)
 
-newp <- pais[2]$label 
-newp <- pais$label
+#Isolated the label "País"
+pais_label <- pais$label
 
-questions[1] <- newp
+#Renaming first index of questions list to "País"
+questions[1] <- pais_label
+
+#Repeating same process with column "year"
 year <- attributes(argentina$year)
 year <- year$label
 questions[2] <- year
@@ -19,25 +27,30 @@ questions[2] <- year
 x <- 6
 i <- 3
 
-spot <- all_common_col[[x]]
-new <- attributes(argentina[[spot]])$label
-new
-x <- x + 1
+#Begins at 6th index of all_common_col list
+original <- all_common_col[[x]]
+
+#Renames old column placeholder
+new <- attributes(argentina[[original]])$label
 questions[i] <- new
+
+#Moves to next spot in list
+x <- x + 1
 i <- i + 1
 
-while(x<152){
-  spot <- all_common_col[[x]]
-  new <- attributes(argentina[[spot]])$label
+#Loops through all items in all_common_col list and replaces old column name with full question
+while(x < 152){
+  original <- all_common_col[[x]]
+  new <- attributes(argentina[[original]])$label
   x <- x + 1
   questions[i] <- new
   i <- i + 1
   
 }
 questions[149] <- "Unique ID"
-
-
 ```
+I renamed spot to original for clarification and added comments for readbility.
+
 
 ```{r}
 library(tidyverse)

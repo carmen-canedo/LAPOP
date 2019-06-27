@@ -5,15 +5,14 @@ editor_options:
   chunk_output_type: inline
 ---
 
-
-THIS IS RIGHT
-
 ##Lengthening the data set
 ```{r}
 library(tidyverse)
 library(devtools)
 library(fs)
 
+
+#Is this the same as the function on Questions As Columns?
 long_questions <- function(country, country_before, column){
   i <- 1
   new_list <- rep(NA, column)
@@ -31,29 +30,39 @@ long_questions <- function(country, country_before, column){
 lengthen <- function(country) {
   country_before <- country
   country <- country %>%
-  select(-strata,-sex) %>%
-  gather(column_name, answer, estratopri:gi7r)
+    #These are excluded because they are repeated
+    select(-strata,-sex) %>%
+    #Brings together the following columns
+    gather(column_name, answer, estratopri:gi7r)
+  
+  #Takes length of column_name and arguments from long_questions
   column <- length(country$column_name)
   questions <- long_questions(country, country_before, column)
-  country <- country %>% mutate(questions)
-  country <- country %>% select(pais, year, unique_id, column_name, answer, questions)
+  
+  country <- country %>%
+    mutate(questions)
+  country <- country %>%
+    select(pais, year, unique_id, column_name, answer, questions)
   return(country)
 }
-
-
-
 ```
 
+
+##Spreading the data
+We need to have a spread version of the tidy data so that it is usable in Tableau Public.
 ```{r}
-uruguay_and_venezuela <- list(uruguay, venezuela)
-uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
+library(tidyr)
+library(tidyverse)
+library(dplyr)
+
+tidy_spread <- function(x){
+  x <- x %>%
+    select(-column_name) %>%
+    spread(questions, answer)
+}
 ```
 
-```{r}
-#uruguay_long <- lengthen(uruguay)
-uruguay_wide <- try(uruguay_long)
-```
-
+##
 ```{r}
 argentina_wide <- tidy_spread(lengthen(argentina))
 belize_wide <- tidy_spread(lengthen(belize))
