@@ -27,9 +27,9 @@ costa <- shrink(costa)
 ecuador <- shrink(ecuador)
 elsalvador <- shrink(elsalvador)
 guatemala <- shrink(guatemala)
-guyana <- shrink(guyana)
+#guyana <- shrink(guyana) Commented out because it is English-only
 honduras <- shrink(honduras)
-jamaica <- shrink(jamaica)
+#jamaica <- shrink(jamaica) Commented out because it is English-only
 mexico <- shrink(mexico)
 nicaragua <- shrink(nicaragua)
 panama <- shrink(panama)
@@ -41,7 +41,7 @@ uruguay <- shrink(uruguay)
 venezuela <- shrink(venezuela)
 ```
 
-shrink to any of the number of columns that are wanted, needs to happen before the columns are edited, with make everything take less time
+Shrink to any of the number of columns that are wanted, needs to happen before the columns are edited, with make everything take less time
 
 ```{r}
 

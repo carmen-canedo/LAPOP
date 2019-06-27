@@ -253,7 +253,7 @@ can_bra_bol_chi <- list_and_factor(can_bra_bol, chile) #199
 can_bra_bol_chi_col <- list_and_factor(can_bra_bol_chi, colombia) #199
 after_colombia <- list_and_factor(can_bra_bol_chi_col, belize) #197
 after_belize <- list_and_factor(after_colombia, argentina) #196 
-after_argentina <- list_and_factor(after_guyana, elsalvador) #194
+after_argentina <- list_and_factor(after_belize, elsalvador) #194
 after_elsalvador <- list_and_factor(after_argentina, ecuador) #194
 after_ecuador <- list_and_factor(after_elsalvador, guatemala) #194
 after_guatemala <- list_and_factor(after_ecuador, costa) #193

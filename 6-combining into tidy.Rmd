@@ -5,15 +5,19 @@ editor_options:
   chunk_output_type: inline
 ---
 
+<<<<<<< HEAD
 
 
 THIS IS RIGHT
+=======
+>>>>>>> 0c308015a932150582373448afc53a48d5faa38f
 ##Lengthening the data set
 ```{r}
 library(tidyverse)
 library(devtools)
 library(fs)
 
+<<<<<<< HEAD
 long_questions <- function(country, country_before, column){
   i <- 1
   new_list <- rep(NA, column)
@@ -26,10 +30,13 @@ long_questions <- function(country, country_before, column){
   new_list
 }
 
+=======
+>>>>>>> 0c308015a932150582373448afc53a48d5faa38f
 #Function for reducing columns
 lengthen <- function(country) {
   country_before <- country
   country <- country %>%
+<<<<<<< HEAD
   select(-strata,-sex) %>%
   gather(column_name, answer, estratopri:gi7r)
   column <- length(country$column_name)
@@ -43,6 +50,15 @@ lengthen <- function(country) {
 argentina_long <- lengthen(argentina)
 
 
+=======
+  select(-strata) %>%
+  gather(column_name, answer, estratopri:gi7r) %>%
+  select(pais, year, unique_id, column_name, answer)
+  return(country)
+}
+
+#argentina <- lengthen(argentina)
+>>>>>>> 0c308015a932150582373448afc53a48d5faa38f
 ```
 
 
@@ -70,11 +86,14 @@ colombia_and_costa <- map_df(colombia_and_costa, lengthen)
 ecuador_and_elsalvador <- list(ecuador, elsalvador)
 ecuador_and_elsalvador <- map_df(ecuador_and_elsalvador, lengthen)
 
-guatemala_and_guyana <- list(guatemala, guyana)
-guatemala_and_guyana <- map_df(guatemala_and_guyana, lengthen)
+#guatemala_and_guyana <- list(guatemala, guyana)
+#guatemala_and_guyana <- map_df(guatemala_and_guyana, lengthen)
 
-honduras_and_jamaica <- list(honduras, jamaica)
-honduras_and_jamaica <- map_df(honduras_and_jamaica, lengthen)
+#honduras_and_jamaica <- list(honduras, jamaica)
+#honduras_and_jamaica <- map_df(honduras_and_jamaica, lengthen)
+
+guatemala_and_honduras <- list(guatemala, honduras)
+guatemala_and_honduras <- map_df(guatemala_and_honduras, lengthen)
 
 mexico_and_nicaragua <- list(mexico, nicaragua)
 mexico_and_nicaragua <- map_df(mexico_and_nicaragua, lengthen)
@@ -90,9 +109,10 @@ uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
 
 paraguay <- lengthen(paraguay)
 
-countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
+countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, honduras, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 tidy_data <- map_dfr(countries, lengthen)
 #Then adds a column to the merged data set that distinguishes if the question is universal or not
+#Removed Guayan and Jamaica 6/27
 
 # everything <- everything %>%
 #   mutate(common = column_name %in% all_common_col)
@@ -116,9 +136,31 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 
+<<<<<<< HEAD
 
 
 #argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
+=======
+try <- function(x){
+  x <- x %>% 
+    group_by(column_name) %>%
+    mutate(grouped_id = row_number())
+  x %>%
+    spread(key = column_name, value = answer) %>%
+    select(-grouped_id)
+}
+
+argentina_and_belize <- argentina_and_belize %>%
+  spread(key = column_name, value = answer)
+  x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
+  x %>% spread(key = questions, value = answer) %>% select(-grouped_id)
+}
+
+bolivia(try)
+
+#argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
+
+>>>>>>> 0c308015a932150582373448afc53a48d5faa38f
 
 #skipped because Error: Each row of output must be identified by a unique combination of keys
 
@@ -200,6 +242,10 @@ argentina_long %>%
 
 Let's find all the elements that aren't unique
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0c308015a932150582373448afc53a48d5faa38f
 ```{r}
 argentina_duplicates <- argentina_long %>% 
   mutate(unique_question = paste(unique_id, questions)) %>%
@@ -210,8 +256,11 @@ argentina_duplicates <- argentina_long %>%
 
 tail(argentina_duplicates)
 ```
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 0c308015a932150582373448afc53a48d5faa38f
