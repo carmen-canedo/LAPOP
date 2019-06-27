@@ -11,6 +11,7 @@ library(dplyr)
 library(haven)
 
 bolivia_merged <- read_dta("1500779614Bolivia LAPOP merge 2004-2014 v3.0_W_dta.zip")
+#write.csv(bolivia_merged, "unfactored_bolivia.csv") used for Tableau test
 
 #Factors Bolivia merged data set
 bolivia_factor <- as_factor(bolivia_merged)
@@ -124,8 +125,10 @@ factor_country <- function(filename) {
   library(haven)
   library(dplyr)
   country_merged <- read_dta(filename)
-  nums <- country_merged %>% select(year, q2)
-  other <- country_merged %>% select(-year,-q2)
+  nums <- country_merged %>%
+    select(year, q2)
+  other <- country_merged %>%
+    select(-year,-q2)
   other <- as_factor(other)
   other <- cbind(nums, other)
   other
@@ -292,6 +295,33 @@ venezuela <- factor_country("1165310382Venezuela LAPOP merge 2007-2014 v3.0_W_dt
 ```
 
 
+<<<<<<< HEAD
+```{r}
+firstlist <- vector("list", 150)
+pais <- attributes(argentina$pais)
+newp <- pais[2]$label 
+newp <- pais$label
+
+year <- attributes(argentina$year)
+year <- year$label
+t <- c(newp, year)
+t[1]
+class(t)
+
+
+x <- 6
+
+
+for(x in length(all_common_col)){
+  new <- attributes(argentina$all_common_col[x])
+}
+new <- attributes(argentina$pais)
+
+```
+
+
+=======
+>>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
 
 
 ```{r}

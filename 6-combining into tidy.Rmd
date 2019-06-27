@@ -49,11 +49,9 @@ argentina <- lengthen(argentina)
 
 library(purrr)
 uruguay_and_venezuela <- list(uruguay, venezuela)
-
 uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
 
 argentina_and_belize <- list(argentina, belize)
-
 argentina_and_belize <- map_df(argentina_and_belize, lengthen)
 
 bolivia_and_brazil <- list(bolivia, brazil)
@@ -86,19 +84,14 @@ suriname_and_usa <- map_df(suriname_and_usa, lengthen)
 uruguay_and_venezuela <- list(uruguay, venezuela)
 uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
 
-
-
-
-
 paraguay <- lengthen(paraguay)
 
 countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 tidy_data <- map_dfr(countries, lengthen)
 #Then adds a column to the merged data set that distinguishes if the question is universal or not
 
-#everything <- everything %>% mutate(common = column_name %in% all_common_col)
-
-
+# everything <- everything %>%
+#   mutate(common = column_name %in% all_common_col)
 ```
 
 ```{r}
@@ -112,7 +105,6 @@ library(purrr)
 countries_2016 <- list(venezuela_2016_17, bolivia_2016_17, brazil_2016_17, canada_2016_17, chile_2016_17, colombia_2016_17,costa_2016_17, ecuador_2016_17, elsalvador_2016_17, guatemala_2016_17, guyana_2016_17, honduras_2016_17, jamaica_2016_17, mexico_2016_17, nicaragua_2016_17, panama_2016_17, paraguay_2016_17, peru_2016_17, usa_2016_17, uruguay_2016_17)
 
 every_2016 <- map_dfr(countries_2016, shrink)
-
 ```
 
 ```{r}
@@ -121,6 +113,18 @@ library(tidyverse)
 library(dplyr)
 
 try <- function(x){
+<<<<<<< HEAD
+  x <- x %>% 
+    group_by(column_name) %>%
+    mutate(grouped_id = row_number())
+  x %>%
+    spread(key = column_name, value = answer) %>%
+    select(-grouped_id)
+}
+
+argentina_and_belize <- argentina_and_belize %>%
+  spread(key = column_name, value = answer)
+=======
   x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
   x %>% spread(key = questions, value = answer) %>% select(-grouped_id)
 }
@@ -128,6 +132,7 @@ try <- function(x){
 bolivia(try)
 
 #argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
+>>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
 
 #skipped because Error: Each row of output must be identified by a unique combination of keys
 
@@ -173,8 +178,6 @@ first_half <- bind_rows(first_and_second, third_and_fourth)
 last_combine <- bind_rows(first_half, last)
 
 write_csv(last_combine, "combined_tidy.csv")
-
-
 ```
 
 ```{r}
@@ -192,4 +195,11 @@ bolivia <- try(bolivia)
 
 
 
+<<<<<<< HEAD
+```{r}
+library(haven)
+attributes(argentina_and_belize$pais)
+```
+=======
+>>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
 
