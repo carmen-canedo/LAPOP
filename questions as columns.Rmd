@@ -70,7 +70,8 @@ lengthen <- function(country) {
   return(country)
 }
 
-colombia <- lengthen(colombia)
+argentina <- lengthen(argentina)
+belize <- lengthen(belize)
 
 
 

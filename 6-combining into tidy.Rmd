@@ -7,19 +7,19 @@ editor_options:
 
 
 
-
+THIS IS RIGHT
 ##Lengthening the data set
 ```{r}
 library(tidyverse)
 library(devtools)
 library(fs)
 
-long_questions <- function(country, column_name){
+long_questions <- function(country, country_before, column){
   i <- 1
-  new_list <- rep(NA, length(column_name))
-  for(x in column_name){
-    spot <- x
-    new <- attributes(argentina[[spot]])$label
+  new_list <- rep(NA, column)
+  while(i <= column){
+    spot <- (country$column_name)[i]
+    new <- attributes(country_before[[spot]])$label
     new_list[i] <- new
     i <- i + 1
   }
@@ -28,20 +28,24 @@ long_questions <- function(country, column_name){
 
 #Function for reducing columns
 lengthen <- function(country) {
+  country_before <- country
   country <- country %>%
-  select(-strata) %>%
+  select(-strata,-sex) %>%
   gather(column_name, answer, estratopri:gi7r)
-  column <- country %>% select(column_name)
-  questions <- long_questions(country, column)
+  column <- length(country$column_name)
+  questions <- long_questions(country, country_before, column)
   country <- country %>% mutate(questions)
-  select(pais, year, unique_id, column_name, answer, questions)
+  country <- country %>% select(pais, year, unique_id, column_name, answer, questions)
   return(country)
 }
 
-argentina <- lengthen(argentina)
+
+argentina_long <- lengthen(argentina)
 
 
 ```
+
+
 
 ##Applying above functions to every country
 ```{r}
@@ -112,27 +116,9 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 
-try <- function(x){
-<<<<<<< HEAD
-  x <- x %>% 
-    group_by(column_name) %>%
-    mutate(grouped_id = row_number())
-  x %>%
-    spread(key = column_name, value = answer) %>%
-    select(-grouped_id)
-}
 
-argentina_and_belize <- argentina_and_belize %>%
-  spread(key = column_name, value = answer)
-=======
-  x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
-  x %>% spread(key = questions, value = answer) %>% select(-grouped_id)
-}
-
-bolivia(try)
 
 #argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
->>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
 
 #skipped because Error: Each row of output must be identified by a unique combination of keys
 
@@ -179,27 +165,53 @@ last_combine <- bind_rows(first_half, last)
 
 write_csv(last_combine, "combined_tidy.csv")
 ```
-
+THIS IS RIGHT
 ```{r}
 library(tidyr)
 library(tidyverse)
 library(dplyr)
 
 try <- function(x){
-  x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
-  x %>% spread(key = questions, value = answer) %>% select(-grouped_id, -column_name)
+  x <- x %>% select(-column_name) %>% spread(questions, answer)
 }
 
-bolivia <- try(bolivia)
+argentina_wide <- try(argentina_long)
 ```
 
-
-
-<<<<<<< HEAD
 ```{r}
-library(haven)
-attributes(argentina_and_belize$pais)
+argentina_and_belize <- list(argentina_long, belize_long)
+argentina_and_belize <- map_df(argentina_and_belize, lengthen)
+
+argentina_and_belize <- argentina_and_belize %>%
+  spread(key = questions, value = answer)
 ```
-=======
->>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
+
+```{r}
+argentina_spread <- argentina_long %>% select(-column_name) %>% spread(questions, answer)
+```
+Jesse suspects that we many not have a unique combination of unique id and questions which is causing spread to fail, checking for unique combination of ID and question
+```{r}
+library(assertr)
+argentina_long %>% 
+  mutate(unique_question = paste(unique_id, questions)) %>%
+  assert(is_uniq, unique_question)
+```
+
+
+Let's find all the elements that aren't unique
+
+```{r}
+argentina_duplicates <- argentina_long %>% 
+  mutate(unique_question = paste(unique_id, questions)) %>%
+  group_by(unique_question) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  filter(count > 1)
+
+tail(argentina_duplicates)
+```
+
+
+
+
 
