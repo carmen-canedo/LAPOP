@@ -295,7 +295,6 @@ venezuela <- factor_country("1165310382Venezuela LAPOP merge 2007-2014 v3.0_W_dt
 ```
 
 
-<<<<<<< HEAD
 ```{r}
 firstlist <- vector("list", 150)
 pais <- attributes(argentina$pais)
@@ -316,12 +315,7 @@ for(x in length(all_common_col)){
   new <- attributes(argentina$all_common_col[x])
 }
 new <- attributes(argentina$pais)
-
 ```
-
-
-=======
->>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
 
 
 ```{r}

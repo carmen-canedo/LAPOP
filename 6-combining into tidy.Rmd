@@ -5,42 +5,22 @@ editor_options:
   chunk_output_type: inline
 ---
 
-
-
-
 ##Lengthening the data set
 ```{r}
 library(tidyverse)
 library(devtools)
 library(fs)
 
-long_questions <- function(country, column_name){
-  i <- 1
-  new_list <- rep(NA, length(column_name))
-  for(x in column_name){
-    spot <- x
-    new <- attributes(argentina[[spot]])$label
-    new_list[i] <- new
-    i <- i + 1
-  }
-  new_list
-}
-
 #Function for reducing columns
 lengthen <- function(country) {
   country <- country %>%
   select(-strata) %>%
-  gather(column_name, answer, estratopri:gi7r)
-  column <- country %>% select(column_name)
-  questions <- long_questions(country, column)
-  country <- country %>% mutate(questions)
-  select(pais, year, unique_id, column_name, answer, questions)
+  gather(column_name, answer, estratopri:gi7r) %>%
+  select(pais, year, unique_id, column_name, answer)
   return(country)
 }
 
-argentina <- lengthen(argentina)
-
-
+#argentina <- lengthen(argentina)
 ```
 
 ##Applying above functions to every country
@@ -66,11 +46,14 @@ colombia_and_costa <- map_df(colombia_and_costa, lengthen)
 ecuador_and_elsalvador <- list(ecuador, elsalvador)
 ecuador_and_elsalvador <- map_df(ecuador_and_elsalvador, lengthen)
 
-guatemala_and_guyana <- list(guatemala, guyana)
-guatemala_and_guyana <- map_df(guatemala_and_guyana, lengthen)
+#guatemala_and_guyana <- list(guatemala, guyana)
+#guatemala_and_guyana <- map_df(guatemala_and_guyana, lengthen)
 
-honduras_and_jamaica <- list(honduras, jamaica)
-honduras_and_jamaica <- map_df(honduras_and_jamaica, lengthen)
+#honduras_and_jamaica <- list(honduras, jamaica)
+#honduras_and_jamaica <- map_df(honduras_and_jamaica, lengthen)
+
+guatemala_and_honduras <- list(guatemala, honduras)
+guatemala_and_honduras <- map_df(guatemala_and_honduras, lengthen)
 
 mexico_and_nicaragua <- list(mexico, nicaragua)
 mexico_and_nicaragua <- map_df(mexico_and_nicaragua, lengthen)
@@ -86,9 +69,10 @@ uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
 
 paraguay <- lengthen(paraguay)
 
-countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, guyana, honduras, jamaica, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
+countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, honduras, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 tidy_data <- map_dfr(countries, lengthen)
 #Then adds a column to the merged data set that distinguishes if the question is universal or not
+#Removed Guayan and Jamaica 6/27
 
 # everything <- everything %>%
 #   mutate(common = column_name %in% all_common_col)
@@ -113,7 +97,6 @@ library(tidyverse)
 library(dplyr)
 
 try <- function(x){
-<<<<<<< HEAD
   x <- x %>% 
     group_by(column_name) %>%
     mutate(grouped_id = row_number())
@@ -124,13 +107,6 @@ try <- function(x){
 
 argentina_and_belize <- argentina_and_belize %>%
   spread(key = column_name, value = answer)
-=======
-  x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
-  x %>% spread(key = questions, value = answer) %>% select(-grouped_id)
-}
-
-#argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
->>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
 
 #skipped because Error: Each row of output must be identified by a unique combination of keys
 
@@ -179,11 +155,8 @@ write_csv(last_combine, "combined_tidy.csv")
 ```
 
 
-<<<<<<< HEAD
+
 ```{r}
 library(haven)
 attributes(argentina_and_belize$pais)
 ```
-=======
->>>>>>> 130c8e675b1574e3d8af24a2bc4d629fd0e78b66
-
