@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: inline
 ---
 #Lengthen Function
-```{r}
+```{r, message = FALSE}
 library(tidyverse)
 library(devtools)
 library(fs)
@@ -20,69 +20,55 @@ lengthen <- function(country) {
 }
 ```
 
-#Here is the original format for `try()`
+##Applying above function to every country
+Adds all the countries, in correct tidy format into a large data set
 ```{r}
-library(tidyr)
-library(tidyverse)
-library(dplyr)
+library(purrr)
+argentina_and_belize <- list(argentina, belize)
+argentina_and_belize <- map_df(argentina_and_belize, lengthen)
 
-try <- function(x){
-  x <- x %>% 
-    group_by(column_name) %>%
-    mutate(grouped_id = row_number())
-  x %>%
-    spread(key = column_name, value = answer) %>%
-    select(-grouped_id)
-}
+bolivia_and_brazil <- list(bolivia, brazil)
+bolivia_and_brazil <- map_df(bolivia_and_brazil, lengthen)
 
-argentina_and_belize <- argentina_and_belize %>%
-  spread(key = column_name, value = answer)
+canada_and_chile <- list(canada, chile)
+canada_and_chile <- map_df(canada_and_chile, lengthen)
 
-bolivia_and_brazil <- try(bolivia_and_brazil)
-canada_and_chile <- try(canada_and_chile)
+colombia_and_costa <- list(colombia, costa)
+colombia_and_costa <- map_df(colombia_and_costa, lengthen)
 
+ecuador_and_elsalvador <- list(ecuador, elsalvador)
+ecuador_and_elsalvador <- map_df(ecuador_and_elsalvador, lengthen)
 
-colombia_and_costa <- try(colombia_and_costa)
+#guatemala_and_guyana <- list(guatemala, guyana)
+#guatemala_and_guyana <- map_df(guatemala_and_guyana, lengthen)
 
-ecuador_and_elsalvador <- try(ecuador_and_elsalvador)
-guatemala_and_guyana <- try(guatemala_and_guyana)
+#honduras_and_jamaica <- list(honduras, jamaica)
+#honduras_and_jamaica <- map_df(honduras_and_jamaica, lengthen)
 
-first_four <- bind_rows(argentina_and_belize, bolivia_and_brazil)
+guatemala_and_honduras <- list(guatemala, honduras)
+guatemala_and_honduras <- map_df(guatemala_and_honduras, lengthen)
 
-second_four <- bind_rows(canada_and_chile, colombia_and_costa)
-first_and_second <- bind_rows(first_four, second_four)
+mexico_and_nicaragua <- list(mexico, nicaragua)
+mexico_and_nicaragua <- map_df(mexico_and_nicaragua, lengthen)
 
-third_four <- bind_rows(ecuador_and_elsalvador, guatemala_and_guyana)
+panama_and_peru <- list(panama, peru)
+panama_and_peru <- map_df(panama_and_peru, lengthen)
 
-honduras_and_jamaica <- try(honduras_and_jamaica)
-mexico_and_nicaragua <- try(mexico_and_nicaragua)
+suriname_and_usa <- list(suriname, usa)
+suriname_and_usa <- map_df(suriname_and_usa, lengthen)
 
-fourth_four <- bind_rows(honduras_and_jamaica, mexico_and_nicaragua)
+uruguay_and_venezuela <- list(uruguay, venezuela)
+uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
 
-third_and_fourth <- bind_rows(third_four, fourth_four)
+paraguay <- lengthen(paraguay)
 
-panama_and_peru <- try(panama_and_peru)
- 
-suriname_and_usa <- try(suriname_and_usa)
+countries <- list(argentina, belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, honduras, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 
-fifth_four <- bind_rows(panama_and_peru, suriname_and_usa)
-
-uruguay_and_venezuela <- try(uruguay_and_venezuela)
-
-sixth_four <- bind_rows(fifth_four, uruguay_and_venezuela)
-
-paraguay <- try(paraguay)
-
-last <- bind_rows(sixth_four, paraguay)
-
-first_half <- bind_rows(first_and_second, third_and_fourth)
-
-last_combine <- bind_rows(first_half, last)
-
-write_csv(last_combine, "combined_tidy.csv")
+tidy_data <- map_dfr(countries, lengthen)
 ```
 
 Going to reformat it so that it is easier to read and has informative function name.
+
 
 #Defining the fucntion
 I am renaming the funtion so that it reflects what the function does. 
@@ -101,7 +87,7 @@ tidy_spread <- function(x){
 }
 ```
 
-#Pairing Countries - This contains data sets in English and Spanish
+#Pairing Countries - This contains data sets in English and Spanish, jump to line 148 for Spanish-only
 ```{r}
 #First set of four countries
 argentina_and_belize <- tidy_spread(argentina_and_belize)
@@ -119,7 +105,7 @@ guatemala_and_guyana <- tidy_spread(guatemala_and_guyana)
 honduras_and_jamaica <- tidy_spread(honduras_and_jamaica)
 mexico_and_nicaragua <- tidy_spread(mexico_and_nicaragua)
 
-#Sixth set of four countries
+#Fifth set of four countries
 panama_and_peru <- tidy_spread(panama_and_peru)
 suriname_and_usa <- tidy_spread(suriname_and_usa)
 
@@ -174,14 +160,41 @@ ecuador_and_elsalvador <- tidy_spread(ecuador_and_elsalvador)
 guatemala_and_honduras <- tidy_spread(guatemala_and_honduras)
 
 #Fourth set of four countries
-honduras_and_mexico <- tidy_spread(honduras_and_mexico)
-_and_nicaragua <- tidy_spread(mexico_and_nicaragua)
-
-#Sixth set of four countries
+mexico_and_nicaragua <- tidy_spread(mexico_and_nicaragua)
 panama_and_peru <- tidy_spread(panama_and_peru)
-suriname_and_usa <- tidy_spread(suriname_and_usa)
 
-#Final set - 3 countries becuase of odd number
+#Fifth set of four countries
+suriname_and_usa <- tidy_spread(suriname_and_usa)
 uruguay_and_venezuela <- tidy_spread(uruguay_and_venezuela)
+
+#Final set - 2 countries becuase of odd number
 paraguay <- tidy_spread(paraguay)
+```
+
+
+#Combinig Sets using `bind_rows` Spanish-only
+```{r}
+first_four <- bind_rows(argentina_and_belize, bolivia_and_brazil)
+second_four <- bind_rows(canada_and_chile, colombia_and_costa)
+
+third_four <- bind_rows(ecuador_and_elsalvador, guatemala_and_honduras)
+fourth_four <- bind_rows(mexico_and_nicaragua, panama_and_peru)
+
+fifth_four <- bind_rows(suriname_and_usa, uruguay_and_venezuela)
+last <- bind_rows(fifth_four, paraguay)
+```
+
+#Combining All Sets Spanish-only
+```{r}
+first_and_second <- bind_rows(first_four, second_four)
+third_and_fourth <- bind_rows(third_four, fourth_four)
+
+first_half <- bind_rows(first_and_second, third_and_fourth)
+second_half <- bind_rows(first_half, fifth_four)
+last_combine <- bind_rows(second_half, last)
+```
+
+#Writing data into csv file for Tableau
+```{r}
+write_csv(last_combine, "spanish_combined_tidy.csv")
 ```
