@@ -292,42 +292,6 @@ venezuela <- factor_country("1165310382Venezuela LAPOP merge 2007-2014 v3.0_W_dt
 ```
 
 
-```{r}
-questions <- rep(NA,149)
-pais <- attributes(argentina$pais)
-
-newp <- pais[2]$label 
-newp <- pais$label
-
-questions[1] <- newp
-year <- attributes(argentina$year)
-year <- year$label
-questions[2] <- year
-
-x <- 6
-i <- 3
-
-spot <- all_common_col[[x]]
-new <- attributes(argentina[[spot]])$label
-
-x <- x + 1
-list[i] <- new
-i <- i + 1
-
-while(x<152){
-  spot <- all_common_col[[x]]
-  new <- attributes(argentina[[spot]])$label
-  x <- x + 1
-  questions[i] <- new
-  i <- i + 1
-  
-}
-questions[149] <- "Unique ID"
-
-
-```
-
-
 
 
 ```{r}
