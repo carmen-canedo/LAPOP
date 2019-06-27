@@ -10,14 +10,13 @@ editor_options:
 
 THIS IS RIGHT
 =======
->>>>>>> 0c308015a932150582373448afc53a48d5faa38f
+
 ##Lengthening the data set
 ```{r}
 library(tidyverse)
 library(devtools)
 library(fs)
 
-<<<<<<< HEAD
 long_questions <- function(country, country_before, column){
   i <- 1
   new_list <- rep(NA, column)
@@ -30,13 +29,11 @@ long_questions <- function(country, country_before, column){
   new_list
 }
 
-=======
->>>>>>> 0c308015a932150582373448afc53a48d5faa38f
+
 #Function for reducing columns
 lengthen <- function(country) {
   country_before <- country
   country <- country %>%
-<<<<<<< HEAD
   select(-strata,-sex) %>%
   gather(column_name, answer, estratopri:gi7r)
   column <- length(country$column_name)
@@ -47,18 +44,9 @@ lengthen <- function(country) {
 }
 
 
-argentina_long <- lengthen(argentina)
 
 
-=======
-  select(-strata) %>%
-  gather(column_name, answer, estratopri:gi7r) %>%
-  select(pais, year, unique_id, column_name, answer)
-  return(country)
-}
 
-#argentina <- lengthen(argentina)
->>>>>>> 0c308015a932150582373448afc53a48d5faa38f
 ```
 
 
@@ -136,31 +124,13 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 
-<<<<<<< HEAD
-
-
-#argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
-=======
-try <- function(x){
-  x <- x %>% 
-    group_by(column_name) %>%
-    mutate(grouped_id = row_number())
-  x %>%
-    spread(key = column_name, value = answer) %>%
-    select(-grouped_id)
-}
-
-argentina_and_belize <- argentina_and_belize %>%
-  spread(key = column_name, value = answer)
-  x <- x %>% group_by(column_name) %>% mutate(grouped_id = row_number())
-  x %>% spread(key = questions, value = answer) %>% select(-grouped_id)
-}
-
-bolivia(try)
 
 #argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
 
->>>>>>> 0c308015a932150582373448afc53a48d5faa38f
+
+#argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
+
+
 
 #skipped because Error: Each row of output must be identified by a unique combination of keys
 
@@ -217,20 +187,9 @@ try <- function(x){
   x <- x %>% select(-column_name) %>% spread(questions, answer)
 }
 
-argentina_wide <- try(argentina_long)
 ```
 
-```{r}
-argentina_and_belize <- list(argentina_long, belize_long)
-argentina_and_belize <- map_df(argentina_and_belize, lengthen)
 
-argentina_and_belize <- argentina_and_belize %>%
-  spread(key = questions, value = answer)
-```
-
-```{r}
-argentina_spread <- argentina_long %>% select(-column_name) %>% spread(questions, answer)
-```
 Jesse suspects that we many not have a unique combination of unique id and questions which is causing spread to fail, checking for unique combination of ID and question
 ```{r}
 library(assertr)
@@ -242,10 +201,7 @@ argentina_long %>%
 
 Let's find all the elements that aren't unique
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 0c308015a932150582373448afc53a48d5faa38f
 ```{r}
 argentina_duplicates <- argentina_long %>% 
   mutate(unique_question = paste(unique_id, questions)) %>%
@@ -256,11 +212,4 @@ argentina_duplicates <- argentina_long %>%
 
 tail(argentina_duplicates)
 ```
-<<<<<<< HEAD
 
-
-
-
-
-=======
->>>>>>> 0c308015a932150582373448afc53a48d5faa38f
