@@ -5,11 +5,8 @@ editor_options:
   chunk_output_type: inline
 ---
 
-<<<<<<< HEAD
-
 
 THIS IS RIGHT
-=======
 
 ##Lengthening the data set
 ```{r}
@@ -45,66 +42,44 @@ lengthen <- function(country) {
 
 
 
-
-
 ```
 
-
-
-##Applying above functions to every country
 ```{r}
-#Adds all the countries, in correct tidy format into a large data set
-
-library(purrr)
 uruguay_and_venezuela <- list(uruguay, venezuela)
 uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
-
-argentina_and_belize <- list(argentina, belize)
-argentina_and_belize <- map_df(argentina_and_belize, lengthen)
-
-bolivia_and_brazil <- list(bolivia, brazil)
-bolivia_and_brazil <- map_df(bolivia_and_brazil, lengthen)
-
-canada_and_chile <- list(canada, chile)
-canada_and_chile <- map_df(canada_and_chile, lengthen)
-
-colombia_and_costa <- list(colombia, costa)
-colombia_and_costa <- map_df(colombia_and_costa, lengthen)
-
-ecuador_and_elsalvador <- list(ecuador, elsalvador)
-ecuador_and_elsalvador <- map_df(ecuador_and_elsalvador, lengthen)
-
-#guatemala_and_guyana <- list(guatemala, guyana)
-#guatemala_and_guyana <- map_df(guatemala_and_guyana, lengthen)
-
-#honduras_and_jamaica <- list(honduras, jamaica)
-#honduras_and_jamaica <- map_df(honduras_and_jamaica, lengthen)
-
-guatemala_and_honduras <- list(guatemala, honduras)
-guatemala_and_honduras <- map_df(guatemala_and_honduras, lengthen)
-
-mexico_and_nicaragua <- list(mexico, nicaragua)
-mexico_and_nicaragua <- map_df(mexico_and_nicaragua, lengthen)
-
-panama_and_peru <- list(panama, peru)
-panama_and_peru <- map_df(panama_and_peru, lengthen)
-
-suriname_and_usa <- list(suriname, usa)
-suriname_and_usa <- map_df(suriname_and_usa, lengthen)
-
-uruguay_and_venezuela <- list(uruguay, venezuela)
-uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
-
-paraguay <- lengthen(paraguay)
-
-countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, honduras, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
-tidy_data <- map_dfr(countries, lengthen)
-#Then adds a column to the merged data set that distinguishes if the question is universal or not
-#Removed Guayan and Jamaica 6/27
-
-# everything <- everything %>%
-#   mutate(common = column_name %in% all_common_col)
 ```
+
+```{r}
+#uruguay_long <- lengthen(uruguay)
+uruguay_wide <- try(uruguay_long)
+```
+
+```{r}
+argentina_wide <- tidy_spread(lengthen(argentina))
+belize_wide <- tidy_spread(lengthen(belize))
+bolivia_wide <- tidy_spread(lengthen(bolivia))
+brazil_wide <- tidy_spread(lengthen(brazil))
+canada_wide <- stidy_spread(lengthen(canada))
+chile_wide <- tidy_spread(lengthen(chile))
+colombia_wide <- tidy_spread(lengthen(colombia))
+costa_wide <- tidy_spread(lengthen(costa))
+ecuador_wide <- tidy_spread(lengthen(ecuador))
+elsalvador_wide <- tidy_spread(lengthen(elsalvador))
+guatemala_wide <- tidy_spread(lengthen(guatemala))
+#guyana_wide <- tidy_spread(lengthen(guyana)) Commented out because it is English-only
+honduras_wide <- tidy_spread(lengthen(honduras))
+#jamaica_wide <- tidy_spread(lengthen(jamaica)) Commented out because it is English-only
+mexico_wide <- tidy_spread(lengthen(mexico))
+nicaragua_wide <- tidy_spread(lengthen(nicaragua))
+panama_wide <- tidy_spread(lengthen(panama))
+paraguay_wide <- tidy_spread(lengthen(paraguay))
+peru_wide <- tidy_spread(lengthen(peru))
+suriname_wide <- tidy_spread(lengthen(suriname))
+usa_wide <- tidy_spread(lengthen(usa))
+uruguay_wide <- tidy_spread(lengthen(uruguay))
+venezuela_wide <- tidy_spread(lengthen(venezuela))
+```
+
 
 ```{r}
 write_csv(tidy_data, "tidy_data.csv")
@@ -125,50 +100,27 @@ library(tidyverse)
 library(dplyr)
 
 
-#argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
+argentina_and_belize <- bind_rows(argentina_wide, belize_wide)
+bolivia_and_brazil <- bind_rows(bolivia_wide, brazil_wide)
+canada_and_chile <- bind_rows(canada_wide, chile_wide)
+colombia_and_costa <- bind_rows(colombia_wide, costa_wide)
+ecuador_and_elsalvador <- bind_rows(ecuador_wide, elsalvador_wide)
+guatemala_and_honduras <- bind_rows(guatemala_wide, honduras_wide)
+mexico_and_nicaragua <- bind_rows(mexico_wide, nicaragua_wide)
+panama_and_peru <- bind_rows(panama_wide, peru_wide)
+suriname_and_usa <- bind_rows(suriname_wide, usa_wide)
+uruguay_and_venezuela <- bind_rows(uruguay_wide, venezuela_wide)
 
-
-#argentina_and_belize <- argentina_and_belize %>% spread(key = questions, value = answer)
-
-
-
-#skipped because Error: Each row of output must be identified by a unique combination of keys
-
-bolivia_and_brazil <- try(bolivia_and_brazil)
-canada_and_chile <- try(canada_and_chile)
-
-
-colombia_and_costa <- try(colombia_and_costa)
-
-ecuador_and_elsalvador <- try(ecuador_and_elsalvador)
-guatemala_and_guyana <- try(guatemala_and_guyana)
-
+  
 first_four <- bind_rows(argentina_and_belize, bolivia_and_brazil)
-
 second_four <- bind_rows(canada_and_chile, colombia_and_costa)
 first_and_second <- bind_rows(first_four, second_four)
 
-third_four <- bind_rows(ecuador_and_elsalvador, guatemala_and_guyana)
-
-honduras_and_jamaica <- try(honduras_and_jamaica)
-mexico_and_nicaragua <- try(mexico_and_nicaragua)
-
-fourth_four <- bind_rows(honduras_and_jamaica, mexico_and_nicaragua)
-
-third_and_fourth <- bind_rows(third_four, fourth_four)
-
-panama_and_peru <- try(panama_and_peru)
- 
-suriname_and_usa <- try(suriname_and_usa)
+third_four <- bind_rows(ecuador_and_elsalvador, guatemala_and_honduras)
+third_and_fourth <- bind_rows(third_four, mexico_and_nicaragua)
 
 fifth_four <- bind_rows(panama_and_peru, suriname_and_usa)
-
-uruguay_and_venezuela <- try(uruguay_and_venezuela)
-
 sixth_four <- bind_rows(fifth_four, uruguay_and_venezuela)
-
-paraguay <- try(paraguay)
-
 last <- bind_rows(sixth_four, paraguay)
 
 first_half <- bind_rows(first_and_second, third_and_fourth)
@@ -183,7 +135,7 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 
-try <- function(x){
+tidy_spread <- function(x){
   x <- x %>% select(-column_name) %>% spread(questions, answer)
 }
 
