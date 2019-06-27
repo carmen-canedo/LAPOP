@@ -44,31 +44,35 @@ library(tidyverse)
 library(devtools)
 library(fs)
 
-long_questions <- function(country, column_name){
+long_questions <- function(country, country_before, column){
   i <- 1
-  new_list <- rep(NA, length(column_name))
-  for(x in column_name){
-    spot <- x
-    new <- attributes(argentina[[spot]])$label
+  new_list <- rep(NA, column)
+  while(x < column){
+    spot <- (country$column_name)[x]
+    new <- attributes(country_before[[spot]])$label
     new_list[i] <- new
     i <- i + 1
+    x <- x + 1
   }
   new_list
 }
 
 #Function for reducing columns
 lengthen <- function(country) {
+  country_before <- country
   country <- country %>%
   select(-strata) %>%
   gather(column_name, answer, estratopri:gi7r)
-  column <- country %>% select(column_name)
-  questions <- long_questions(country, column)
+  column <- length(country$column_name)
+  questions <- long_questions(country, country_before, column)
   country <- country %>% mutate(questions)
-  select(pais, year, unique_id, column_name, answer, questions)
+  country <- country %>% select(pais, year, unique_id, column_name, answer, questions)
   return(country)
 }
 
-argentina <- lengthen(argentina)
+colombia <- lengthen(colombia)
+
+
 
 
 ```
