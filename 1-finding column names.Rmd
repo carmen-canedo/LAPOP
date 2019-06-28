@@ -429,5 +429,3 @@ common_in_2016 <- list_and_factor(eigh, paraguay_2016_17)
 ```
 
 
-
-

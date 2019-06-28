@@ -5,23 +5,34 @@ editor_options:
   chunk_output_type: inline
 ---
 
-
-THIS IS RIGHT
-
 ##Lengthening the data set
 ```{r}
 library(tidyverse)
 library(devtools)
 library(fs)
 
+
+#Is this the same as the function on Questions As Columns?
 long_questions <- function(country, country_before, column){
+  #Starting at index 1
   i <- 1
+<<<<<<< HEAD
   number_for_dupID <- rep(NA, column)
+=======
+  
+  #Makes new list with NA vlaues based on number of columns
+>>>>>>> 711fb845fe8ef1130e2aa04c93b00f681705644c
   new_list <- rep(NA, column)
+  
+  #Replaces original column names with readable version
   while(i <= column){
-    spot <- (country$column_name)[i]
-    new <- attributes(country_before[[spot]])$label
+    #Isolates original column names
+    original <- (country$column_name)[i]
+    #Replaces with label
+    new <- attributes(country_before[[original]])$label
+    #Adds object to list
     new_list[i] <- new
+    #Moves to next item
     i <- i + 1
   }
   new_list
@@ -33,29 +44,48 @@ long_questions <- function(country, country_before, column){
 lengthen <- function(country) {
   country_before <- country
   country <- country %>%
+<<<<<<< HEAD
   select(-strata,-sex, -vb11_12) %>%
   gather(column_name, answer, estratopri:gi7r)
   column <- length(country$column_name)
   questions <- long_questions(country, country_before, column)
   country <- country %>% mutate(questions)
   country <- country %>% select(pais, year, unique_id, column_name, answer, questions, extra_id)
+=======
+    #These are excluded because they are repeated
+    select(-strata,-sex) %>%
+    #Brings together the following columns
+    gather(column_name, answer, estratopri:gi7r)
+  
+  #Takes length of column_name and arguments from long_questions
+  column <- length(country$column_name)
+  questions <- long_questions(country, country_before, column)
+  
+  country <- country %>%
+    mutate(questions)
+  country <- country %>%
+    select(pais, year, unique_id, column_name, answer, questions)
+>>>>>>> 711fb845fe8ef1130e2aa04c93b00f681705644c
   return(country)
 }
-
-
-
 ```
 
+
+##Spreading the data
+We need to have a spread version of the tidy data so that it is usable in Tableau Public.
 ```{r}
-uruguay_and_venezuela <- list(uruguay, venezuela)
-uruguay_and_venezuela <- map_df(uruguay_and_venezuela, lengthen)
+library(tidyr)
+library(tidyverse)
+library(dplyr)
+
+tidy_spread <- function(x){
+  x <- x %>%
+    select(-column_name) %>%
+    spread(questions, answer)
+}
 ```
 
-```{r}
-#uruguay_long <- lengthen(uruguay)
-uruguay_wide <- try(uruguay_long)
-```
-
+##Applying functions to all countries
 ```{r}
 argentina_wide <- tidy_spread(lengthen(argentina))
 belize_wide <- tidy_spread(lengthen(belize))
