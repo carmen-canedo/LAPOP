@@ -14,12 +14,21 @@ library(fs)
 
 #Is this the same as the function on Questions As Columns?
 long_questions <- function(country, country_before, column){
+  #Starting at index 1
   i <- 1
+  
+  #Makes new list with NA vlaues based on number of columns
   new_list <- rep(NA, column)
+  
+  #Replaces original column names with readable version
   while(i <= column){
-    spot <- (country$column_name)[i]
-    new <- attributes(country_before[[spot]])$label
+    #Isolates original column names
+    original <- (country$column_name)[i]
+    #Replaces with label
+    new <- attributes(country_before[[original]])$label
+    #Adds object to list
     new_list[i] <- new
+    #Moves to next item
     i <- i + 1
   }
   new_list
@@ -62,7 +71,7 @@ tidy_spread <- function(x){
 }
 ```
 
-##
+##Applying functions to all countries
 ```{r}
 argentina_wide <- tidy_spread(lengthen(argentina))
 belize_wide <- tidy_spread(lengthen(belize))

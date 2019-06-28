@@ -14,6 +14,7 @@ questions <- rep(NA,149)
 pais <- attributes(argentina$pais)
 
 #Isolated the label "País"
+pais_label <- pais[2]$label
 pais_label <- pais$label
 
 #Renaming first index of questions list to "País"
@@ -82,13 +83,6 @@ lengthen <- function(country) {
   country <- country %>% select(pais, year, unique_id, column_name, answer, questions)
   return(country)
 }
-
-argentina <- lengthen(argentina)
-belize <- lengthen(belize)
-
-
-
-
 ```
 
 
