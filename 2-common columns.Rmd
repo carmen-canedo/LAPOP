@@ -40,6 +40,9 @@ usa <- shrink(usa)
 uruguay <- shrink(uruguay)
 venezuela <- shrink(venezuela)
 ```
+```{r}
+levels(argentina)
+```
 
 Shrink to any of the number of columns that are wanted, needs to happen before the columns are edited, with make everything take less time
 

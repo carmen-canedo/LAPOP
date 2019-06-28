@@ -16,6 +16,7 @@ library(fs)
 
 long_questions <- function(country, country_before, column){
   i <- 1
+  number_for_dupID <- rep(NA, column)
   new_list <- rep(NA, column)
   while(i <= column){
     spot <- (country$column_name)[i]
@@ -27,16 +28,17 @@ long_questions <- function(country, country_before, column){
 }
 
 
+
 #Function for reducing columns
 lengthen <- function(country) {
   country_before <- country
   country <- country %>%
-  select(-strata,-sex) %>%
+  select(-strata,-sex, -vb11_12) %>%
   gather(column_name, answer, estratopri:gi7r)
   column <- length(country$column_name)
   questions <- long_questions(country, country_before, column)
   country <- country %>% mutate(questions)
-  country <- country %>% select(pais, year, unique_id, column_name, answer, questions)
+  country <- country %>% select(pais, year, unique_id, column_name, answer, questions, extra_id)
   return(country)
 }
 
@@ -57,27 +59,34 @@ uruguay_wide <- try(uruguay_long)
 ```{r}
 argentina_wide <- tidy_spread(lengthen(argentina))
 belize_wide <- tidy_spread(lengthen(belize))
-bolivia_wide <- tidy_spread(lengthen(bolivia))
 brazil_wide <- tidy_spread(lengthen(brazil))
-canada_wide <- stidy_spread(lengthen(canada))
 chile_wide <- tidy_spread(lengthen(chile))
-colombia_wide <- tidy_spread(lengthen(colombia))
-costa_wide <- tidy_spread(lengthen(costa))
-ecuador_wide <- tidy_spread(lengthen(ecuador))
-elsalvador_wide <- tidy_spread(lengthen(elsalvador))
-guatemala_wide <- tidy_spread(lengthen(guatemala))
-#guyana_wide <- tidy_spread(lengthen(guyana)) Commented out because it is English-only
-honduras_wide <- tidy_spread(lengthen(honduras))
-#jamaica_wide <- tidy_spread(lengthen(jamaica)) Commented out because it is English-only
-mexico_wide <- tidy_spread(lengthen(mexico))
-nicaragua_wide <- tidy_spread(lengthen(nicaragua))
 panama_wide <- tidy_spread(lengthen(panama))
 paraguay_wide <- tidy_spread(lengthen(paraguay))
 peru_wide <- tidy_spread(lengthen(peru))
 suriname_wide <- tidy_spread(lengthen(suriname))
-usa_wide <- tidy_spread(lengthen(usa))
 uruguay_wide <- tidy_spread(lengthen(uruguay))
 venezuela_wide <- tidy_spread(lengthen(venezuela))
+bolivia_wide <- tidy_spread(lengthen(bolivia))
+canada_length <- lengthen(canada)
+canada_wide <- tidy_spread(canada_length)
+colombia_length <- lengthen(colombia)
+colombia_wide <- tidy_spread(colombia_length)
+costa_wide <- tidy_spread(lengthen(costa))
+ecuador_wide <- tidy_spread(lengthen(ecuador))
+elsalvador_wide <- tidy_spread(lengthen(elsalvador))
+guatemala_wide <- tidy_spread(lengthen(guatemala))
+honduras_wide <- tidy_spread(lengthen(honduras))
+mexico_wide <- tidy_spread(lengthen(mexico))
+nicaragua_wide <- tidy_spread(lengthen(nicaragua))
+usa_wide <- tidy_spread(lengthen(usa))
+```
+
+
+
+```{r}
+#guyana_wide <- tidy_spread(lengthen(guyana)) Commented out because it is English-only
+#jamaica_wide <- tidy_spread(lengthen(jamaica)) Commented out because it is English-only
 ```
 
 
@@ -151,6 +160,7 @@ argentina_long %>%
 ```
 
 
+
 Let's find all the elements that aren't unique
 
 
@@ -165,3 +175,69 @@ argentina_duplicates <- argentina_long %>%
 tail(argentina_duplicates)
 ```
 
+
+```{r}
+bolivia_long <- lengthen(bolivia)
+```
+
+
+```{r}
+bolivia_duplicates <- bolivia_long %>% 
+  mutate(unique_question = paste(unique_id, questions)) %>%
+  group_by(unique_question) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  filter(count > 1)
+
+tail(bolivia_duplicates)
+```
+
+```{r}
+usa_long <- lengthen(usa)
+```
+
+
+```{r}
+usa_duplicates <- usa_long %>% 
+  mutate(unique_question = paste(unique_id, questions)) %>%
+  group_by(unique_question) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  filter(count > 1)
+
+tail(usa_duplicates)
+```
+
+
+```{r}
+nicaragua_long <- lengthen(nicaragua)
+```
+
+
+```{r}
+nicaragua_duplicates <- nicaragua_long %>% 
+  mutate(unique_question = paste(unique_id, questions)) %>%
+  group_by(unique_question) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  filter(count > 1)
+
+tail(nicaragua_duplicates)
+```
+
+
+```{r}
+honduras_long <- lengthen(honduras)
+```
+
+
+```{r}
+honduras_duplicates <- honduras_long %>% 
+  mutate(unique_question = paste(unique_id, questions)) %>%
+  group_by(unique_question) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  filter(count > 1)
+
+tail(honduras_duplicates)
+```

@@ -21,38 +21,124 @@ making_uniqueID <- function(country){
              substr(year, 3, 4), sep = ''),
            idnum, sep = "_"))
 }
+
+extra_id <- function(country) {
+  i <- 1
+  column <- length(country$idnum)
+  number_for_dupID <- rep(NA, column)
+  while(i <= column){
+    number_for_dupID[i] <- i
+    i <- i + 1
+  }
+  number_for_dupID
+}
+
+full_id <- function(country){
+  country <- making_uniqueID(country)
+  extra_id <- extra_id(country)
+  country <- country %>% mutate(extra_id)
+  country
+}
   
 countries <- list(argentina,belize, bolivia, brazil, canada, chile, colombia, costa, ecuador, elsalvador, guatemala, honduras, mexico, nicaragua, panama, peru, suriname, usa, uruguay, venezuela)
 #Removed Guyan and Jamaica 6/27
   
-argentina_test <- making_uniqueID(argentina)
-argentina_test %>% select(unique_id) %>% distinct  
+#bolivia_test <- making_uniqueID(bolivia)
+#bolivia_test %>% select(unique_id) %>% distinct  
 
-argentina <- making_uniqueID(argentina)
-belize <- making_uniqueID(belize)
-bolivia <- making_uniqueID(bolivia)
-brazil <- making_uniqueID(brazil)
-canada <- making_uniqueID(canada)
-chile <- making_uniqueID(chile)
-colombia <- making_uniqueID(colombia)
-costa <- making_uniqueID(costa)
-ecuador <- making_uniqueID(ecuador)
-elsalvador <- making_uniqueID(elsalvador)
-guatemala <- making_uniqueID(guatemala)
-#guyana <- making_uniqueID(guyana)
-honduras <- making_uniqueID(honduras)
-#jamaica <- making_uniqueID(jamaica)
-mexico <- making_uniqueID(mexico)
-nicaragua <- making_uniqueID(nicaragua)
-panama <- making_uniqueID(panama)
-paraguay <- making_uniqueID(paraguay)
-peru <- making_uniqueID(peru)
-suriname <- making_uniqueID(suriname)
-usa <- making_uniqueID(usa)
-uruguay <- making_uniqueID(uruguay)
-venezuela <- making_uniqueID(venezuela)
+argentina <- full_id(argentina)
+belize <- full_id(belize)
+bolivia <- full_id(bolivia)
+brazil <- full_id(brazil)
+canada <- full_id(canada)
+chile <- full_id(chile)
+colombia <- full_id(colombia)
+costa <- full_id(costa)
+ecuador <- full_id(ecuador)
+elsalvador <- full_id(elsalvador)
+guatemala <- full_id(guatemala)
+#guyana <- full_id(guyana)
+honduras <- full_id(honduras)
+#jamaica <- full_id(jamaica)
+mexico <- full_id(mexico)
+nicaragua <- full_id(nicaragua)
+panama <- full_id(panama)
+paraguay <- full_id(paraguay)
+peru <- full_id(peru)
+suriname <- full_id(suriname)
+usa <- full_id(usa)
+uruguay <- full_id(uruguay)
+venezuela <- full_id(venezuela)
 ```
 
 tested at the end to see if the ids created are actually unique, and they are! :)
+Bolivia's ids are not unique
+```{r}
+bolivia_test <- making_uniqueID(bolivia)
+bolivia_test %>% select(unique_id) %>% distinct  
+```
+
+Canada's ids are not unique
+```{r}
+canada_test <- making_uniqueID(canada)
+canada_test %>% select(unique_id) %>% distinct
+```
+
+
+not unique (by two..)
+```{r}
+colombia_test <- making_uniqueID(colombia)
+colombia_test %>% select(unique_id) %>% distinct
+```
+
+not unique
+```{r}
+costa_test <- making_uniqueID(costa)
+costa_test %>% select(unique_id) %>% distinct
+```
+
+not unique (by two..)
+```{r}
+ecuador_test <- making_uniqueID(ecuador)
+ecuador_test %>% select(unique_id) %>% distinct
+```
+
+not unique
+```{r}
+elsalvador_test <- making_uniqueID(elsalvador)
+elsalvador_test %>% select(unique_id) %>% distinct
+```
+
+not unique
+```{r}
+guatemala_test <- making_uniqueID(guatemala)
+guatemala_test %>% select(unique_id) %>% distinct
+```
+
+not unique by one...
+```{r}
+honduras_test <- making_uniqueID(honduras)
+honduras_test %>% select(unique_id) %>% distinct
+```
+
+```{r}
+mexico_test <- making_uniqueID(mexico)
+mexico_test %>% select(unique_id) %>% distinct
+```
+
+not unique by one..
+```{r}
+nicaragua_test <- making_uniqueID(nicaragua)
+nicaragua_test %>% select(unique_id) %>% distinct
+```
+
+
+
+UNIQUE - problem identified, because of the two columns vb11_
+```{r}
+usa_test <- making_uniqueID(usa)
+usa_test %>% select(unique_id) %>% distinct
+```
+
 
 
