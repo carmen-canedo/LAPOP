@@ -23,24 +23,31 @@ long_questions <- function(country, country_before, column){
   while(i <= column){
     #Isolates original column names
     original <- (country$column_name)[i]
-    #Replaces with label
+#**!!!!! this corrects the lack of label for vb11_10 and adds the appropriate label to its corresponding column, BUT this does not fix the complete problem yet**
+    if(original == "vb11_10"){
+      correct_label <- "vb11_12"
+      new <- attributes(country_before[[correct_label]])$label
+      new_list[i] <- new
+      i <- i + 1
+    }
+    else{#Replaces with label
     new <- attributes(country_before[[original]])$label
     #Adds object to list
     new_list[i] <- new
     #Moves to next item
     i <- i + 1
+    }
   }
   new_list
 }
-
-
 
 #Function for reducing columns
 lengthen <- function(country) {
   country_before <- country
   country <- country %>%
   #These are excluded because they are repeated
-  select(-strata,-sex, -vb11_12) %>%
+#!!removed jc1rr because it is the original data 
+  select(-strata,-sex, -jc1rr) %>%
   #Brings together the following columns
   gather(column_name, answer, estratopri:gi7r)
   #Takes length of column_name and arguments from long_questions
@@ -54,6 +61,12 @@ lengthen <- function(country) {
 }
 ```
 
+Working to combine the columns vb11_10 and vb11_12 into vb11_12, they both have data but for different years and need to be put together, but the method below does not work
+```{r}
+bolivia$vb11_12 <- paste(bolivia$vb11_10, bolivia$vb11_12)
+```
+
+
 
 ##Spreading the data
 We need to have a spread version of the tidy data so that it is usable in Tableau Public.
@@ -64,7 +77,7 @@ library(dplyr)
 
 tidy_spread <- function(x){
   x <- x %>%
-    select(-column_name) %>%
+    select(-column_name, -vb11_12) %>%
     spread(questions, answer)
 }
 ```
@@ -97,13 +110,13 @@ usa_wide <- tidy_spread(lengthen(usa))
 ```
 
 
-
+We removed the respective english speaking countries
 ```{r}
 #guyana_wide <- tidy_spread(lengthen(guyana)) Commented out because it is English-only
 #jamaica_wide <- tidy_spread(lengthen(jamaica)) Commented out because it is English-only
 ```
 
-
+Writing the data set so we can utilize it in other applications
 ```{r}
 write_csv(tidy_data, "tidy_data.csv")
 ```
@@ -117,6 +130,8 @@ countries_2016 <- list(venezuela_2016_17, bolivia_2016_17, brazil_2016_17, canad
 every_2016 <- map_dfr(countries_2016, shrink)
 ```
 
+
+Combining all the wide data sets together so that the data can be displayed in Tablau
 ```{r}
 library(tidyr)
 library(tidyverse)
@@ -175,7 +190,7 @@ argentina_long %>%
 
 
 
-Let's find all the elements that aren't unique
+Let's find all the elements that aren't unique - did this for every country that was not originally functioning and spreading correctly
 
 
 ```{r}
@@ -191,11 +206,6 @@ tail(argentina_duplicates)
 
 
 ```{r}
-bolivia_long <- lengthen(bolivia)
-```
-
-
-```{r}
 bolivia_duplicates <- bolivia_long %>% 
   mutate(unique_question = paste(unique_id, questions)) %>%
   group_by(unique_question) %>%
@@ -204,10 +214,6 @@ bolivia_duplicates <- bolivia_long %>%
   filter(count > 1)
 
 tail(bolivia_duplicates)
-```
-
-```{r}
-usa_long <- lengthen(usa)
 ```
 
 
@@ -224,11 +230,6 @@ tail(usa_duplicates)
 
 
 ```{r}
-nicaragua_long <- lengthen(nicaragua)
-```
-
-
-```{r}
 nicaragua_duplicates <- nicaragua_long %>% 
   mutate(unique_question = paste(unique_id, questions)) %>%
   group_by(unique_question) %>%
@@ -237,11 +238,6 @@ nicaragua_duplicates <- nicaragua_long %>%
   filter(count > 1)
 
 tail(nicaragua_duplicates)
-```
-
-
-```{r}
-honduras_long <- lengthen(honduras)
 ```
 
 

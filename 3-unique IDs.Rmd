@@ -5,7 +5,8 @@ editor_options:
   chunk_output_type: inline
 ---
 
-#Makes unique and combinds 
+#Makes unique ids and combines
+We added an extra column that just numbered all the way down for the amount of columns because we needed a unique attribute for when spreading
 ```{r}
 making_uniqueID <- function(country){
   #Combines idnum and idnum_14 with "/" and then makes unique id
@@ -71,8 +72,8 @@ uruguay <- full_id(uruguay)
 venezuela <- full_id(venezuela)
 ```
 
-tested at the end to see if the ids created are actually unique, and they are! :)
-Bolivia's ids are not unique
+
+Testing the ids with the data sets that we had problems with when spreading, this revealed that many had duplicate ids over the same year, so the data was not unique
 ```{r}
 bolivia_test <- making_uniqueID(bolivia)
 bolivia_test %>% select(unique_id) %>% distinct  
