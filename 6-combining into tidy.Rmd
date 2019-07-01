@@ -94,7 +94,7 @@ argentina_wide <- tidy_spread(argentina_long)
 ```
 
 
-Below, I tried to filter out vb11_12 because it is actually a row, but when I run the argentina_long and wide lines above, it still says the object is not found. I am going to go back up to the lengthen function and see if maybe I can exclue the vb11_12 column from the gather()
+Below, I tried to filter out vb11_12 because it is actually a row, but when I run the argentina_long and wide lines above, it still says the object is not found.
 #!Do not execute chunk, for reference only
 ```{r}
 tidy_spread <- function(x){
@@ -105,6 +105,27 @@ tidy_spread <- function(x){
 }
 ```
 
+I am going to see if `unite()` might be able to join together vb11_10 and vb11_12. It looks like except for in Suriname and the USA, vb11_10 does not have a label, but has observations.
+
+```{r}
+arg_combined <- argentina %>% 
+  #Combines the two columns
+  unite(vb_combined, vb11_10, vb11_12, sep = "")
+```
+
+I am having issues with the vb_combined column returning NANA where the value of both columns are NA.
+
+Might try setting it so that if NANA it changes to just NA using set_na(), but I also want for the observations that look like NA_politicalparty to not have the NA in front of it.
+
+Found the [tidyr Github page](https://github.com/tidyverse/tidyr/issues/203) where Hadley Wickham adds in na.rm function to unite. Going to test below.
+
+```{r}
+arg_combined2 <- argentina %>% 
+  #Combines the two columns
+  unite(vb_combined, vb11_10, vb11_12, na.rm = TRUE, sep = "", remove = FALSE)
+```
+
+Doing this reads the error, "Error: `TRUE` must evaluate to column positions or names, not a logical vector"
 
 
 ```{r}
