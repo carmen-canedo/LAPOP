@@ -11,14 +11,15 @@ library(tidyverse)
 library(devtools)
 library(fs)
 
-
-#Is this the same as the function on Questions As Columns?
+#Adding questions to column names
 long_questions <- function(country, country_before, column){
   #Starting at index 1
   i <- 1
-  number_for_dupID <- rep(NA, column)
+  
   #Makes new list with NA vlaues based on number of columns
+  number_for_dupID <- rep(NA, column)
   new_list <- rep(NA, column)
+  
   #Replaces original column names with readable version
   while(i <= column){
     #Isolates original column names
@@ -30,7 +31,8 @@ long_questions <- function(country, country_before, column){
       new_list[i] <- new
       i <- i + 1
     }
-    else{#Replaces with label
+    else{
+    #Replaces with label
     new <- attributes(country_before[[original]])$label
     #Adds object to list
     new_list[i] <- new
@@ -46,10 +48,9 @@ lengthen <- function(country) {
   country_before <- country
   country <- country %>%
   #These are excluded because they are repeated
-#!!removed jc1rr because it is the original data 
   select(-strata,-sex, -jc1rr) %>%
   #Brings together the following columns
-  gather(column_name, answer, estratopri:gi7r)
+  gather(column_name, answer, estratopri:gi7r, -vb11_12)
   #Takes length of column_name and arguments from long_questions
   column <- length(country$column_name)
   questions <- long_questions(country, country_before, column)
@@ -77,14 +78,36 @@ library(dplyr)
 
 tidy_spread <- function(x){
   x <- x %>%
+    #Removing column vb11_12 because it is a duplicate
     select(-column_name, -vb11_12) %>%
     spread(questions, answer)
 }
 ```
 
 ##Applying functions to all countries
+When I began applying the two functions to the Argentina dataset, the first line ran the error, "attributes are not identical across measure variables; they will be dropped".
+
+The following line of code ran the error, "object 'vb11_12' not found"
 ```{r}
-argentina_wide <- tidy_spread(lengthen(argentina))
+argentina_long <- lengthen(argentina)
+argentina_wide <- tidy_spread(argentina_long)
+```
+
+
+Below, I tried to filter out vb11_12 because it is actually a row, but when I run the argentina_long and wide lines above, it still says the object is not found. I am going to go back up to the lengthen function and see if maybe I can exclue the vb11_12 column from the gather()
+#!Do not execute chunk, for reference only
+```{r}
+tidy_spread <- function(x){
+  x <- x %>%
+    filter(-vb11_12) %>% 
+    select(-column_name) %>%
+    spread(questions, answer)
+}
+```
+
+
+
+```{r}
 belize_wide <- tidy_spread(lengthen(belize))
 brazil_wide <- tidy_spread(lengthen(brazil))
 chile_wide <- tidy_spread(lengthen(chile))

@@ -25,8 +25,11 @@ making_uniqueID <- function(country){
 
 extra_id <- function(country) {
   i <- 1
+  #Object column is the length of idnum column
   column <- length(country$idnum)
+  #Repeats NA for length column
   number_for_dupID <- rep(NA, column)
+  #Loop that adds row number
   while(i <= column){
     number_for_dupID[i] <- i
     i <- i + 1
@@ -37,7 +40,9 @@ extra_id <- function(country) {
 full_id <- function(country){
   country <- making_uniqueID(country)
   extra_id <- extra_id(country)
-  country <- country %>% mutate(extra_id)
+  #Makes extra column, numbered by row
+  country <- country %>%
+    mutate(extra_id)
   country
 }
   
@@ -74,72 +79,117 @@ venezuela <- full_id(venezuela)
 
 
 Testing the ids with the data sets that we had problems with when spreading, this revealed that many had duplicate ids over the same year, so the data was not unique
+
+Below, Bolivia's number of unique observations in the column unique_id is 18,003 when it should ideally have been 18,196 (total number of rows)
 ```{r}
 bolivia_test <- making_uniqueID(bolivia)
-bolivia_test %>% select(unique_id) %>% distinct  
+
+bolivia_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
-Canada's ids are not unique
+
+Canada's ids are not unique, returns only 7,116 unique observations when it should be 7,151
 ```{r}
 canada_test <- making_uniqueID(canada)
-canada_test %>% select(unique_id) %>% distinct
+
+canada_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
 
-not unique (by two..)
+Not unique by two values
 ```{r}
 colombia_test <- making_uniqueID(colombia)
-colombia_test %>% select(unique_id) %>% distinct
+
+colombia_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
-not unique
+
+Not unique, 4,538 instead of 9,031
 ```{r}
 costa_test <- making_uniqueID(costa)
-costa_test %>% select(unique_id) %>% distinct
+
+costa_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
-not unique (by two..)
+
+Not unique by two values
 ```{r}
 ecuador_test <- making_uniqueID(ecuador)
-ecuador_test %>% select(unique_id) %>% distinct
+
+ecuador_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
-not unique
+
+Not unique, 9,378 instead of 9,426
 ```{r}
 elsalvador_test <- making_uniqueID(elsalvador)
-elsalvador_test %>% select(unique_id) %>% distinct
+
+elsalvador_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
-not unique
+
+Not unique, 9,249 instead of 9,253
 ```{r}
 guatemala_test <- making_uniqueID(guatemala)
-guatemala_test %>% select(unique_id) %>% distinct
+
+guatemala_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
-not unique by one...
+
+Not unique by one observation
 ```{r}
 honduras_test <- making_uniqueID(honduras)
-honduras_test %>% select(unique_id) %>% distinct
+
+honduras_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
+
+Not unique, 8,360 instead of 9,333
 ```{r}
 mexico_test <- making_uniqueID(mexico)
-mexico_test %>% select(unique_id) %>% distinct
+
+mexico_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
-not unique by one..
+Not unique by one observation
 ```{r}
 nicaragua_test <- making_uniqueID(nicaragua)
-nicaragua_test %>% select(unique_id) %>% distinct
+
+nicaragua_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
 
 
 
-UNIQUE - problem identified, because of the two columns vb11_
+UNIQUE - problem identified, because of the two columns vb11_10 and vb11_12
 ```{r}
 usa_test <- making_uniqueID(usa)
-usa_test %>% select(unique_id) %>% distinct
+
+usa_test %>%
+  select(unique_id) %>%
+  distinct()
 ```
+
+I did notice though that the first three letters for unique_id for USA isa EST for some reason?? Will look into later
 
 
 

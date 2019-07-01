@@ -11,7 +11,8 @@ library(assertr)
 #Test for uniqueness of idnum
 
 ```{r}
-guatemala %>% assert(is_uniq, idnum)
+guatemala %>%
+  assert(is_uniq, idnum)
 ```
 
 idnum is not unique, not necessarily people but number of the questionnaire
@@ -20,9 +21,11 @@ idnum is not unique, not necessarily people but number of the questionnaire
 ```{r}
 estrato <- c("Metropolitana", "Suroriente", "Nororiente", "Noroccidente", "Suroccidente", "Sur")
 
-guatemala %>% assert(in_set(estrato), estratopri)
+guatemala %>%
+  assert(in_set(estrato), estratopri)
 
-venezuela %>% assert(in_set(estrato), estratopri)
+venezuela %>%
+  assert(in_set(estrato), estratopri)
 
 ```
 
