@@ -67,7 +67,9 @@ Working to combine the columns vb11_10 and vb11_12 into vb11_12, they both have 
 bolivia$vb11_12 <- paste(bolivia$vb11_10, bolivia$vb11_12)
 ```
 
-
+```{r}
+long_country <-  lengthen(argentina)
+```
 
 ##Spreading the data
 We need to have a spread version of the tidy data so that it is usable in Tableau Public.
@@ -150,10 +152,10 @@ arg_combined <- argentina %>%
   #Converting the columns from factors to characters
    mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
   #Creating new column that 
-   mutate(combined_vb = ifelse(is.na(vb11_10), vb11_12, vb11_10))
+   mutate("¿Con cuál partido político simpatiza usted?" = ifelse(is.na(vb11_10), vb11_12, vb11_10))
 ```
 
-This worked! Still does not have a label, but I can fix that. First I am going to write a function to apply it to all the countries
+This worked! Still does not have a label, but I can fix that. First I am going to write a function to apply it to all the countries.
 
 
 ```{r}
@@ -162,13 +164,82 @@ combine_vb <- function(country) {
   #Converting the columns from factors to characters
    mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
   #Creating new column that 
-   mutate(combined_vb = ifelse(is.na(vb11_10), vb11_12, vb11_10))
+   mutate("¿Con cuál partido político simpatiza usted?" = ifelse(is.na(vb11_10), vb11_12, vb11_10))
 }
 
 bol_combined <- combine_vb(bolivia)
 ```
 
 Okay, this function works, but I noticed that it loses the label of the question for vb11_12, so this would need to include a function step that gives the label name to the new vb_combined column.
+
+Bringing this down so I don't have to scroll up
+```{r}
+library(tidyverse)
+library(devtools)
+library(fs)
+
+#Adding questions to column names
+long_questions <- function(country, country_before, column){
+  #Starting at index 1
+  i <- 1
+  
+  #Makes new list with NA vlaues based on number of columns
+  number_for_dupID <- rep(NA, column)
+  new_list <- rep(NA, column)
+  
+  #Replaces original column names with readable version
+  while(i <= column){
+    #Isolates original column names
+    original <- (country$column_name)[i]
+    #Collects the label for the column
+    new <- attributes(country_before[[original]])$label
+    print(new)
+    #Adds object to list
+    new_list[i] <- new
+    #Moves to next item
+    i <- i + 1
+    print(i)
+    
+    if(is.null(new) == TRUE){
+      #Converting the columns from factors to characters
+      mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
+        #Make new column for final product
+        mutate(vb_combined = ifelse(is.na(vb11_10), vb11_12, vb11_10)) %>% 
+        as_factor(vb_combined) %>% 
+        labelled(label = "¿Con cuál partido político simpatiza usted?")
+      }
+      }
+  new_list
+}
+
+#Function for reducing columns
+lengthen <- function(country) {
+  country_before <- country
+  country <- country %>%
+  #These are excluded because they are repeated
+  select(-strata,-sex, -jc1rr) %>%
+  #Brings together the following columns
+  gather(column_name, answer, estratopri:"¿Con cuál partido político simpatiza usted?")
+  #Takes length of column_name and arguments from long_questions
+  column <- length(country$column_name)
+  questions <- long_questions(country, country_before, column)
+  country <- country %>% 
+    mutate(questions)
+  country <- country %>% 
+    select(pais, year, unique_id, column_name, answer, questions, extra_id)
+  return(country)
+}
+```
+
+
+#Testing output
+```{r}
+arg_test <- lengthen(arg_combined)
+```
+
+I am having a hard time with that, so I am just going to name the column "¿Con cuál partido político simpatiza usted?"
+
+And comparing with the function for creating unique IDs
 
 
 ```{r}
@@ -338,3 +409,13 @@ honduras_duplicates <- honduras_long %>%
 
 tail(honduras_duplicates)
 ```
+
+```{r}
+str(arg_combined, list.len=ncol(arg_combined))
+```
+
+```{r}
+attributes(arg_combined)
+```
+
+
