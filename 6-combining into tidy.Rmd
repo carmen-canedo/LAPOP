@@ -107,6 +107,7 @@ tidy_spread <- function(x){
 
 I am going to see if `unite()` might be able to join together vb11_10 and vb11_12. It looks like except for in Suriname and the USA, vb11_10 does not have a label, but has observations.
 
+#!Do not execute chunk, for reference only
 ```{r}
 arg_combined <- argentina %>% 
   #Combines the two columns
@@ -119,13 +120,55 @@ Might try setting it so that if NANA it changes to just NA using set_na(), but I
 
 Found the [tidyr Github page](https://github.com/tidyverse/tidyr/issues/203) where Hadley Wickham adds in na.rm function to unite. Going to test below.
 
+#!Do not execute chunk, for reference only
 ```{r}
 arg_combined2 <- argentina %>% 
   #Combines the two columns
-  unite(vb_combined, vb11_10, vb11_12, na.rm = TRUE, sep = "", remove = FALSE)
+  unite(vb_combined, vb11_10, vb11_12, sep = "", remove = FALSE, na.rm = TRUE) %>% 
+  as_factor()
 ```
 
 Doing this reads the error, "Error: `TRUE` must evaluate to column positions or names, not a logical vector"
+
+I updated my tidyr package to the developmental one, na.rm = TRUE just keeps the NAs as NANA and turns answers back into numbers. When I do na.rm = FALSE, its still factored.
+
+Following the code Hadley Wickham uses to execute the results we want still doesn't produce the right output.
+
+`df %>% unite("z", x:y, na.rm = TRUE, remove = FALSE)`
+
+#!Do not execute chunk, for reference only
+```{r}
+arg_combined3 <- argentina %>% 
+  unite("vb_combined", vb11_10:vb11_12, sep = "", na.rm = TRUE, remove = FALSE)
+```
+
+Jesse suggested that I try writing an if else statment instead
+
+#Combining vb11_10 and vb11_12
+```{r}
+arg_combined <- argentina %>% 
+  #Converting the columns from factors to characters
+   mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
+  #Creating new column that 
+   mutate(combined_vb = ifelse(is.na(vb11_10), vb11_12, vb11_10))
+```
+
+This worked! Still does not have a label, but I can fix that. First I am going to write a function to apply it to all the countries
+
+
+```{r}
+combine_vb <- function(country) {
+  country <- country %>% 
+  #Converting the columns from factors to characters
+   mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
+  #Creating new column that 
+   mutate(combined_vb = ifelse(is.na(vb11_10), vb11_12, vb11_10))
+}
+
+bol_combined <- combine_vb(bolivia)
+```
+
+Okay, this function works, but I noticed that it loses the label of the question for vb11_12, so this would need to include a function step that gives the label name to the new vb_combined column.
 
 
 ```{r}
