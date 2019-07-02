@@ -148,11 +148,16 @@ Jesse suggested that I try writing an if else statment instead
 
 #Combining vb11_10 and vb11_12
 ```{r}
+library(labelled)
 arg_combined <- argentina %>% 
   #Converting the columns from factors to characters
-   mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
+  mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
   #Creating new column that 
-   mutate("¿Con cuál partido político simpatiza usted?" = ifelse(is.na(vb11_10), vb11_12, vb11_10))
+  mutate(vb_combined = ifelse(is.na(vb11_10), vb11_12, vb11_10)) %>% 
+  select(vb_combined)
+
+  var_label(vb_combined) <- list(vb_combined = "¿Con cuál partido político simpatiza usted?")
+  #labelled(labels = NULL, label = ")
 ```
 
 This worked! Still does not have a label, but I can fix that. First I am going to write a function to apply it to all the countries.
