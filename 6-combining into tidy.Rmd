@@ -6,6 +6,8 @@ editor_options:
 ---
 
 ##Lengthening the data set
+
+!!This is the original function you had last week, I copy and pasted my edited version below
 ```{r}
 library(tidyverse)
 library(devtools)
@@ -152,30 +154,46 @@ library(labelled)
 arg_combined <- argentina %>% 
   #Converting the columns from factors to characters
   mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
-  #Creating new column that 
-  mutate(vb_combined = ifelse(is.na(vb11_10), vb11_12, vb11_10)) %>% 
-  select(vb_combined)
+  #Creating new column that is vb_combined
+  mutate(vb_combined = ifelse(is.na(vb11_10), vb11_12, vb11_10))
 
-  var_label(vb_combined) <- list(vb_combined = "¿Con cuál partido político simpatiza usted?")
-  #labelled(labels = NULL, label = ")
+  var_label(arg_combined$vb_combined) <- "¿Con cuál partido político simpatiza usted?"
 ```
 
-This worked! Still does not have a label, but I can fix that. First I am going to write a function to apply it to all the countries.
-
+This worked! I've tried a couple different ways, as well - like converting it back to a factor and then adding a label, but above works fine. Now I will work to add it to a function for the whole thing
 
 ```{r}
-combine_vb <- function(country) {
-  country <- country %>% 
+library(labelled)
+test_bol_combined <- bolivia %>% 
   #Converting the columns from factors to characters
-   mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
-  #Creating new column that 
-   mutate("¿Con cuál partido político simpatiza usted?" = ifelse(is.na(vb11_10), vb11_12, vb11_10))
-}
+  mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
+  #Creating new column that is vb_combined
+  mutate(vb_combined = ifelse(is.na(vb11_10), vb11_12, vb11_10))
 
-bol_combined <- combine_vb(bolivia)
+  var_label(test_bol_combined$vb_combined) <- "¿Con cuál partido político simpatiza usted?"
 ```
 
-Okay, this function works, but I noticed that it loses the label of the question for vb11_12, so this would need to include a function step that gives the label name to the new vb_combined column.
+This returns a dataframe with labeled vb_combined, issue arises below.
+
+```{r}
+library(labelled)
+#library(sjlabelled)
+combine_vb <- function(country) {
+  country<- country %>%
+    #Changes columns to characters
+    mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
+    #Combines columns
+    mutate(vb_combined = ifelse(is.na(vb11_10), vb11_12, vb11_10))
+  
+  var_label(country$vb_combined) <- "¿Con cuál partido político simpatiza usted?"
+}
+
+#bol_combined <- combine_vb(bolivia)
+test_arg_combined <- combine_vb(argentina)
+#col_combined <- combine_vb(colombia)
+```
+
+This function used to work, but once I added the line to make a label, it is resulting in a character value. Will come back to this, going to look into long_questions() and lengthen()
 
 Bringing this down so I don't have to scroll up
 ```{r}
@@ -198,20 +216,24 @@ long_questions <- function(country, country_before, column){
     original <- (country$column_name)[i]
     #Collects the label for the column
     new <- attributes(country_before[[original]])$label
-    print(new)
     #Adds object to list
     new_list[i] <- new
     #Moves to next item
     i <- i + 1
-    print(i)
     
+    #!!This sort of works, but the vb_combined column doesn't show up in the final product
+    #!!Also, I'm sure that selecting the column brings up an issue because the object would only contain that column,
+    #!!but I'm not sure where to go from there
     if(is.null(new) == TRUE){
-      #Converting the columns from factors to characters
-      mutate_at(vars(vb11_10, vb11_12), as.character) %>% 
-        #Make new column for final product
-        mutate(vb_combined = ifelse(is.na(vb11_10), vb11_12, vb11_10)) %>% 
-        as_factor(vb_combined) %>% 
-        labelled(label = "¿Con cuál partido político simpatiza usted?")
+      country <- country %>%
+        #Makes the two columns characters
+        mutate_at(vars(vb11_10, vb11_12), as.character) %>%
+        #Creates new column
+        mutate(vb_combined = ifelse(is.na(vb11_10), vb11_12, vb11_10)) %>%
+        #Isolates vb_combined
+        select(vb_combined) %>%
+        #Sets the label
+        set_label(label = "¿Con cuál partido político simpatiza usted?")
       }
       }
   new_list
@@ -224,7 +246,7 @@ lengthen <- function(country) {
   #These are excluded because they are repeated
   select(-strata,-sex, -jc1rr) %>%
   #Brings together the following columns
-  gather(column_name, answer, estratopri:"¿Con cuál partido político simpatiza usted?")
+  gather(column_name, answer, estratopri:extra_id)
   #Takes length of column_name and arguments from long_questions
   column <- length(country$column_name)
   questions <- long_questions(country, country_before, column)
@@ -237,14 +259,19 @@ lengthen <- function(country) {
 ```
 
 
+
 #Testing output
 ```{r}
-arg_test <- lengthen(arg_combined)
+arg_test <- lengthen(argentina)
 ```
 
-I am having a hard time with that, so I am just going to name the column "¿Con cuál partido político simpatiza usted?"
+```{r}
+arg_test1 <- arg_test %>% 
+  filter(vb_combined)
+```
 
-And comparing with the function for creating unique IDs
+
+I am going to take a break here and work on some visualizations.
 
 
 ```{r}
