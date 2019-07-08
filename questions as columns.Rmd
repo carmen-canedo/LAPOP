@@ -50,7 +50,7 @@ while(x < 152){
 }
 questions[149] <- "Unique ID"
 ```
-I renamed spot to original for clarification and added comments for readbility.
+
 
 
 ```{r}
@@ -80,7 +80,7 @@ lengthen <- function(country) {
   column <- length(country$column_name)
   questions <- long_questions(country, country_before, column)
   country <- country %>% mutate(questions)
-  country <- country %>% select(pais, year, unique_id, column_name, answer, questions)
+  country <- country %>% select(pais, year, unique_id, column_name, answer, vb_combined, questions)
   return(country)
 }
 ```

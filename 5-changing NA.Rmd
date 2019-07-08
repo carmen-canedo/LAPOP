@@ -36,6 +36,6 @@ peru <- turn_to_NA(peru)
 suriname <- turn_to_NA(suriname)
 usa <- turn_to_NA(usa)
 uruguay <- turn_to_NA(uruguay)
-venezuela <- turn_to_NA(venezuela)
+venezuela<- turn_to_NA(venezuela)
 ```
 

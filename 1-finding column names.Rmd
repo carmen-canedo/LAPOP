@@ -178,7 +178,7 @@ same_column_names <- function(country1, country2) {
   return(final)
 }
 
-same_column_names(factor_country("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip"), factor_country("71618678ElSalvador LAPOP merge 2004-2014 v3.0_W_dta.zip"))
+#same_column_names(factor_country("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip"), factor_country("71618678ElSalvador LAPOP merge 2004-2014 v3.0_W_dta.zip"))
 
 ```
 
@@ -295,28 +295,6 @@ venezuela <- factor_country("1165310382Venezuela LAPOP merge 2007-2014 v3.0_W_dt
 ```
 
 
-```{r}
-firstlist <- vector("list", 150)
-pais <- attributes(argentina$pais)
-newp <- pais[2]$label 
-newp <- pais$label
-
-year <- attributes(argentina$year)
-year <- year$label
-t <- c(newp, year)
-t[1]
-class(t)
-
-
-x <- 6
-
-
-for(x in length(all_common_col)){
-  new <- attributes(argentina$all_common_col[x])
-}
-new <- attributes(argentina$pais)
-```
-
 
 ```{r}
 #Now we will compare my final object with Lindsay's
@@ -373,6 +351,28 @@ all_common_col <- list_and_list(final_comparison, lindsay_final) #152
 
 ```
 
+
+```{r}
+firstlist <- vector("list", 150)
+pais <- attributes(argentina$pais)
+newp <- pais[2]$label 
+newp <- pais$label
+
+year <- attributes(argentina$year)
+year <- year$label
+t <- c(newp, year)
+t[1]
+class(t)
+
+
+x <- 6
+
+
+for(x in length(all_common_col)){
+  new <- attributes(argentina$all_common_col[x])
+}
+new <- attributes(argentina$pais)
+```
 
 #reading in the 2016-2017
 

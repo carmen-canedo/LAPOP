@@ -16,13 +16,13 @@ shrink <- function(country){
 }
 
 
-argentina <- shrink(argentina)
-belize <- shrink(belize)
-bolivia <- shrink(bolivia)
-brazil <- shrink(brazil)
-canada <- shrink(canada)
-chile <- shrink(chile)
-colombia <- shrink(colombia)
+argentina  <- shrink(argentina)
+belize  <- shrink(belize)
+bolivia  <- shrink(bolivia)
+brazil  <- shrink(brazil)
+canada  <- shrink(canada)
+chile  <- shrink(chile)
+colombia  <- shrink(colombia)
 costa <- shrink(costa)
 ecuador <- shrink(ecuador)
 elsalvador <- shrink(elsalvador)
@@ -40,9 +40,7 @@ usa <- shrink(usa)
 uruguay <- shrink(uruguay)
 venezuela <- shrink(venezuela)
 ```
-```{r}
-levels(argentina)
-```
+
 
 Shrink to any of the number of columns that are wanted, needs to happen before the columns are edited, with make everything take less time
 
