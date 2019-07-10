@@ -49,6 +49,12 @@ country <- country %>%
 
 
 ```{r}
+og <- (argentina_long$column_name)[1]
+argentina[[og]]
+```
+
+
+```{r}
 tidy_spread <- function(x){
   x <- x %>%
     select(-column_name) %>%
@@ -58,6 +64,7 @@ tidy_spread <- function(x){
 
 
 ```{r}
+argentina_wide <- tidy_spread(lengthen(argentina))
 belize_wide <- tidy_spread(lengthen(belize))
 brazil_wide <- tidy_spread(lengthen(brazil))
 chile_wide <- tidy_spread(lengthen(chile))
@@ -83,3 +90,39 @@ usa_wide <- tidy_spread(lengthen(usa))
 ```
 
 
+
+```{r}
+library(tidyr)
+library(tidyverse)
+library(dplyr)
+
+
+argentina_and_belize <- bind_rows(argentina_wide, belize_wide)
+bolivia_and_brazil <- bind_rows(bolivia_wide, brazil_wide)
+canada_and_chile <- bind_rows(canada_wide, chile_wide)
+colombia_and_costa <- bind_rows(colombia_wide, costa_wide)
+ecuador_and_elsalvador <- bind_rows(ecuador_wide, elsalvador_wide)
+guatemala_and_honduras <- bind_rows(guatemala_wide, honduras_wide)
+mexico_and_nicaragua <- bind_rows(mexico_wide, nicaragua_wide)
+panama_and_peru <- bind_rows(panama_wide, peru_wide)
+suriname_and_usa <- bind_rows(suriname_wide, usa_wide)
+uruguay_and_venezuela <- bind_rows(uruguay_wide, venezuela_wide)
+
+  
+first_four <- bind_rows(argentina_and_belize, bolivia_and_brazil)
+second_four <- bind_rows(canada_and_chile, colombia_and_costa)
+first_and_second <- bind_rows(first_four, second_four)
+
+third_four <- bind_rows(ecuador_and_elsalvador, guatemala_and_honduras)
+third_and_fourth <- bind_rows(third_four, mexico_and_nicaragua)
+
+fifth_four <- bind_rows(panama_and_peru, suriname_and_usa)
+sixth_four <- bind_rows(fifth_four, uruguay_and_venezuela)
+last <- bind_rows(sixth_four, paraguay)
+
+first_half <- bind_rows(first_and_second, third_and_fourth)
+
+last_combine <- bind_rows(first_half, last)
+
+write_csv(last_combine, "combined_tidy.csv")
+```

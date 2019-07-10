@@ -320,7 +320,7 @@ every_2016 <- map_dfr(countries_2016, shrink)
 ```
 
 
-Combining all the wide data sets together so that the data can be displayed in Tablau
+Combining all the wide data sets together so that the data can be displayed in Tableau
 ```{r}
 library(tidyr)
 library(tidyverse)

@@ -193,6 +193,12 @@ factor_country <- function(filename) {
 }
 ```
 
+Looking at data before factoring
+```{r}
+argentina_before <- read_dta("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip")
+argentina <- factor_country("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip")
+```
+
 ##Loading in Countries
 ```{r}
 library(haven)

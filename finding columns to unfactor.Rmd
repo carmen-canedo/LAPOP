@@ -1,0 +1,93 @@
+---
+title: "finding columns to unfactor"
+output: html_notebook
+---
+the beginnings of trying to figure out how to identify columns that have specific values
+```{r}
+library(glue)
+unfactor <- rep(NA, 152)
+i <- 1
+find_col_to_unfactor <- function(country){
+  for(x in length(all_common_col)){
+    if(1 %in% (country %>% select(!!! syms(all_common_col[x]))) ){
+    unfactor[i] <- all_common_col[x]
+    i <-  i + 1
+    }
+  }
+  return(unfactor)
+}
+
+```
+
+
+Jackpot - was able to make a list of all the columns that have 6 in them, by using [[]] to get right to the column, could probably simplify that first line after the while loop, but it works for now - and now need to think about maybe how to search for multiple things at one, like 6,7,8 all at once. then need to seperate so things can be factored and then combine back together
+```{r}
+unfactor <- rep(NA, 152)
+df <- data_frame()
+i <- 1
+x <- 1
+find_col_to_unfactor2 <- function(country){
+  while(x <= length(all_common_col)){
+    d <- (country %>% select(!!! syms(all_common_col[x])))
+    if(6 %in% d[[unlist(all_common_col[x])]]){
+      unfactor[i] <- all_common_col[x]
+      i <-  i + 1
+    }
+    x <-  x + 1
+  }
+  return(unfactor)
+}
+```
+
+
+trying to figure out how to seperate columns that don't need to be factored into one dataframe, and removing from other
+```{r}
+unfactor <- rep(NA, 152)
+df <- data_frame()
+i <- 1
+x <- 1
+find_col_to_unfactor3 <- function(country){
+  while(x <= length(all_common_col)){
+    d <- (country %>% select(!!! syms(all_common_col[x])))
+    if(6 %in% d[[unlist(all_common_col[x])]]){
+      df %>% mutate(country %>% select(!!! syms(all_common_col[x])))
+      #country %>% remove(country %>% select(!!! syms(all_common_col[x])))
+    }
+    x <-  x + 1
+  }
+  return(df)
+}
+```
+
+
+```{r}
+find_col_to_unfactor3(arg_before)
+```
+
+```{r}
+d <- argentina_before %>% select(!!! syms(all_common_col[1]))
+as.name(unlist(all_common_col[1]))
+x <- as.name(unlist(all_common_col[1]))
+d$as.name(unlist(all_common_col[1]))
+17 %in% argentina_before$pais
+```
+
+```{r}
+
+argentina_before$x
+```
+
+
+```{r}
+unlist(all_common_col[1])
+og <- as.name(unlist(all_common_col[1]))
+argentina %>% select(og)
+```
+
+
+
+```{r}
+df %>% mutate(country %>% select({{all_common_col[x]}})) 
+country %>% remove(country %>% select({{all_common_col[x]}}))
+```
+
