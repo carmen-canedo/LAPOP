@@ -2,7 +2,7 @@
 title: "clean 6-combining"
 output: html_notebook
 ---
-
+SEVEN
 
 I thought about what would be the easiest way to work with the vb, and I decided that it would be easier to do the column manipulation before we lengthen - like what we did with the ids and NAs. I originally added it as 3.5, but this for some reason didn't work, so I tested around with somethings and then tested it out at 2.5, which then worked.
 
@@ -49,6 +49,11 @@ country <- country %>%
 
 
 ```{r}
+costa_wide <- tidy_spread(lengthen(costa))
+```
+
+
+```{r}
 og <- (argentina_long$column_name)[1]
 argentina[[og]]
 ```
@@ -89,6 +94,14 @@ nicaragua_wide <- tidy_spread(lengthen(nicaragua))
 usa_wide <- tidy_spread(lengthen(usa))
 ```
 
+
+```{r}
+suriname_long <- lengthen(suriname)
+```
+
+```{r}
+Error: Each row of output must be identified by a unique combination of keys. Keys are shared for 14012 rows: * 554606, 918918 * 554825, 919137 * 553905, 918217 * 554698, 919010 * 553578, 917890 * 553551, 917863 * 553780, 918092 * 553918, 918230 * 554694, 919006 * 553981, 918293 * 553498, 917810 * 554628, 918940 * 554799, 919111 * 553582, 917894 * 554293, 918605 * 554907, 919219 * 554669, 918981 * 554396, 918708 * 554085, 918397 * 554781, 919093 * 554686, 918998 * 553773, 918085 * 554209, 918521 * 553890, 918202 * 554755, 919067 * 554323, 918635 * 554006, 918318 * 553793, 918105 * 554508, 918820 * 554082, 918394 * 554074, 918386 * 553909, 918221 * 554103, 918415 * 553636, 917948 * 554022, 918334 * 554554, 918866 * 553777, 918089 * 553864, 918176 * 553641, 917953 * 554528, 918840 * 554060, 918372 * 554659, 918971 * 553614, 917926 * 553685, 917997 * 554818, 919130 * 554586, 918898 * 554455, 918767 * 554404, 918716 * 554580, 918892 * 554650, 918962 * 554913, 919225 * 554576, 918888 * 554
+```
 
 
 ```{r}

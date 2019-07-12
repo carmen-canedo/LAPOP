@@ -2,6 +2,9 @@
 title: "finding columns to unfactor"
 output: html_notebook
 ---
+FIRST
+THIS all has to happen first, and then 2 etc....
+
 the beginnings of trying to figure out how to identify columns that have specific values
 ```{r}
 library(glue)
@@ -40,30 +43,183 @@ find_col_to_unfactor2 <- function(country){
 ```
 
 
-trying to figure out how to seperate columns that don't need to be factored into one dataframe, and removing from other
+trying to figure out how to seperate columns that don't need to be factored into one dataframe, and removing from other. Currently it is returning a dataframe with the remaining columns that have been left after the ones not needing to be factored are removed, the unfactored types are in data frame named df
 ```{r}
-unfactor <- rep(NA, 152)
-df <- data_frame()
+factor <- rep(NA, 152)
 i <- 1
 x <- 1
 find_col_to_unfactor3 <- function(country){
+  unfactor <- data_frame(country$pais)
   while(x <= length(all_common_col)){
     d <- (country %>% select(!!! syms(all_common_col[x])))
-    if(6 %in% d[[unlist(all_common_col[x])]]){
-      df %>% mutate(country %>% select(!!! syms(all_common_col[x])))
-      #country %>% remove(country %>% select(!!! syms(all_common_col[x])))
+    if(6 %in% d[[unlist(all_common_col[x])]] || 7 %in% d[[unlist(all_common_col[x])]] || 8 %in% d[[unlist(all_common_col[x])]] || 9 %in% d[[unlist(all_common_col[x])]] || 10 %in% d[[unlist(all_common_col[x])]]){
+      unfactor <- cbind(unfactor, d)
+    }
+    else{
+      factor[i] <- unlist(all_common_col[x])
+      i <- i + 1
     }
     x <-  x + 1
   }
-  return(df)
+  factor <- factor[!is.na(factor)]
+  country[factor]
+  return(country)
 }
+```
+
+combines together succesfully!! This also takes care of shrink, so that it no longer needs to be its own seperate function, but have to have all_common_col initialized so that it can be done
+```{r}
+factor_country <- function(country) {
+  country_factor <- as_factor(country)
+  return(country_factor)
+}
+
+factor <- rep(NA, 152)
+i <- 1
+x <- 1
+factor_unfactor_combine <- function(filename){
+  country <- read_dta(filename)
+  unfactor <- data_frame('extra' = country$pais)
+  while(x <= length(all_common_col)){
+    d <- (country %>% select(!!! syms(all_common_col[x])))
+    if(6 %in% d[[unlist(all_common_col[x])]] || 7 %in% d[[unlist(all_common_col[x])]] || 8 %in% d[[unlist(all_common_col[x])]] || 9 %in% d[[unlist(all_common_col[x])]] || 10 %in% d[[unlist(all_common_col[x])]]){
+      unfactor <- cbind(unfactor, d)
+    }
+    else{
+      factor[i] <- unlist(all_common_col[x])
+      i <- i + 1
+    }
+    x <-  x + 1
+  }
+  unfactor <- unfactor %>% select(-extra)
+  factor <- factor[!is.na(factor)]
+  country <- country[factor]
+  factored_country <- factor_country(country)
+  full_country <- cbind(factored_country, unfactor)
+  return(full_country)
+}
+```
+
+```{r}
+argentina <- factor_unfactor_combine("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip")
+bolivia <- factor_unfactor_combine("1500779614Bolivia LAPOP merge 2004-2014 v3.0_W_dta.zip")
+brazil <- factor_unfactor_combine("1058457654Brazil LAPOP merge 2007-2014 v3.0_W_dta.zip")
+belize <- factor_unfactor_combine("1866361808Belize LAPOP merge 2008-2014 v3.0_W_dta.zip")
+canada <- factor_unfactor_combine("257165704Canada LAPOP merge 2006-2014 v3.0_W_dta.zip")
+chile <- factor_unfactor_combine("1651690880Chile LAPOP merge 2006-2014 v3.0_W_dta.zip")
+colombia <- factor_unfactor_combine("26761406Colombia LAPOP merge 2004-2014 v3.0_W_dta.zip")
+costa <- factor_unfactor_combine("312640706CostaRica LAPOP merge 2004-2014 v3.0_W_dta.zip")
+ecuador <- factor_unfactor_combine("1562314955Ecuador LAPOP merge 2004-2014 v3.0_W_dta.zip")
+elsalvador <- factor_unfactor_combine("71618678ElSalvador LAPOP merge 2004-2014 v3.0_W_dta.zip")
+guatemala <- factor_unfactor_combine("833541857Guatemala LAPOP merge 2004-2014 v3.0_W_dta.zip")
+guyana <- factor_unfactor_combine("1293237393Guyana LAPOP merge 2006-2014 v3.0_W_dta.zip")
+paraguay <- factor_unfactor_combine("450650714Paraguay LAPOP merge 2006-2014 v3.0_W_dta.zip")
+honduras <- factor_unfactor_combine("125162980Honduras LAPOP merge 2004-2014 v3.0_W_dta.zip")
+jamaica <- factor_unfactor_combine("1518553693Jamaica LAPOP merge 2006-2014 v3.0_W_dta.zip")
+mexico <- factor_unfactor_combine("1467358429Mexico LAPOP merge 2004-2014 v3.0_W_dta.zip")
+nicaragua <- factor_unfactor_combine("420919900Nicaragua LAPOP merge 2004-2014 v3.0_W_dta.zip")
+panama <- factor_unfactor_combine("1909860951Panama LAPOP merge 2004-2014 v3.0_W_dta.zip")
+peru <- factor_unfactor_combine("897206140Peru LAPOP merge 2006-2014 v3.0_W_dta.zip")
+suriname <- factor_unfactor_combine("2028239474Suriname LAPOP merge 2010-2014 v3.0_W_dta.zip")
+usa <- factor_unfactor_combine("1355754260UnitedStates LAPOP merge 2006-2014 v3.0_W_dta.zip")
+uruguay <- factor_unfactor_combine("1222977998Uruguay LAPOP merge 2007-2014 v3.0_W_dta.zip")
+venezuela <- factor_unfactor_combine("1165310382Venezuela LAPOP merge 2007-2014 v3.0_W_dta.zip")
+```
+
+!!!USE THIS ONE!!!
+I tested out the above and something went wrong in step 6 so I'm testing other ways to go about it
+```{r}
+factor_country <- function(country) {
+  country_factor <- as_factor(country)
+  return(country_factor)
+}
+
+factor <- rep(NA, 152)
+i <- 1
+x <- 1
+factor_unfactor_combine2 <- function(filename){
+  country <- read_dta(filename)
+  columns <- attributes(country)$names
+  unfactor <- data_frame('extra' = country$pais)
+  while(x <= length(columns)){
+    d <- (country %>% select(!!! syms(columns[x])))
+    if(6 %in% d[[unlist(columns[x])]] || 7 %in% d[[unlist(columns[x])]] || 8 %in% d[[unlist(columns[x])]] || 9 %in% d[[unlist(columns[x])]] || 10 %in% d[[unlist(columns[x])]]){
+      unfactor <- cbind(unfactor, d)
+    }
+    else{
+      factor[i] <- unlist(columns[x])
+      i <- i + 1
+    }
+    x <-  x + 1
+  }
+  unfactor <- unfactor %>% select(-extra)
+  factor <- factor[!is.na(factor)]
+  country <- country[factor]
+  factored_country <- factor_country(country)
+  full_country <- cbind(factored_country, unfactor)
+  return(full_country)
+}
+```
+
+```{r}
+argentina <- factor_unfactor_combine2("1326054827Argentina LAPOP merge 2008-2014 v3.0_W_dta.zip")
+bolivia <- factor_unfactor_combine2("1500779614Bolivia LAPOP merge 2004-2014 v3.0_W_dta.zip")
+brazil <- factor_unfactor_combine2("1058457654Brazil LAPOP merge 2007-2014 v3.0_W_dta.zip")
+belize <- factor_unfactor_combine2("1866361808Belize LAPOP merge 2008-2014 v3.0_W_dta.zip")
+canada <- factor_unfactor_combine2("257165704Canada LAPOP merge 2006-2014 v3.0_W_dta.zip")
+chile <- factor_unfactor_combine2("1651690880Chile LAPOP merge 2006-2014 v3.0_W_dta.zip")
+colombia <- factor_unfactor_combine2("26761406Colombia LAPOP merge 2004-2014 v3.0_W_dta.zip")
+costa <- factor_unfactor_combine2("312640706CostaRica LAPOP merge 2004-2014 v3.0_W_dta.zip")
+ecuador <- factor_unfactor_combine2("1562314955Ecuador LAPOP merge 2004-2014 v3.0_W_dta.zip")
+elsalvador <- factor_unfactor_combine2("71618678ElSalvador LAPOP merge 2004-2014 v3.0_W_dta.zip")
+guatemala <- factor_unfactor_combine2("833541857Guatemala LAPOP merge 2004-2014 v3.0_W_dta.zip")
+guyana <- factor_unfactor_combine2("1293237393Guyana LAPOP merge 2006-2014 v3.0_W_dta.zip")
+paraguay <- factor_unfactor_combine2("450650714Paraguay LAPOP merge 2006-2014 v3.0_W_dta.zip")
+honduras <- factor_unfactor_combine2("125162980Honduras LAPOP merge 2004-2014 v3.0_W_dta.zip")
+jamaica <- factor_unfactor_combine2("1518553693Jamaica LAPOP merge 2006-2014 v3.0_W_dta.zip")
+mexico <- factor_unfactor_combine2("1467358429Mexico LAPOP merge 2004-2014 v3.0_W_dta.zip")
+nicaragua <- factor_unfactor_combine2("420919900Nicaragua LAPOP merge 2004-2014 v3.0_W_dta.zip")
+panama <- factor_unfactor_combine2("1909860951Panama LAPOP merge 2004-2014 v3.0_W_dta.zip")
+peru <- factor_unfactor_combine2("897206140Peru LAPOP merge 2006-2014 v3.0_W_dta.zip")
+suriname <- factor_unfactor_combine2("2028239474Suriname LAPOP merge 2010-2014 v3.0_W_dta.zip")
+usa <- factor_unfactor_combine2("1355754260UnitedStates LAPOP merge 2006-2014 v3.0_W_dta.zip")
+uruguay <- factor_unfactor_combine2("1222977998Uruguay LAPOP merge 2007-2014 v3.0_W_dta.zip")
+venezuela <- factor_unfactor_combine2("1165310382Venezuela LAPOP merge 2007-2014 v3.0_W_dta.zip")
 ```
 
 
 ```{r}
-find_col_to_unfactor3(arg_before)
+argentina_test <- factor_unfactor_combine2(argentina)
+bolivia_test <- factor_unfactor_combine2(bolivia)
+brazil_test <- factor_unfactor_combine2(brazil)
+belize_test <- factor_unfactor_combine2(belize)
+canada_test <- factor_unfactor_combine2(canada)
+chile_test <- factor_unfactor_combine2(chile)
+colombia_test <- factor_unfactor_combine2(colombia)
+costa_test <- factor_unfactor_combine2(costa)
+ecuador_test <- factor_unfactor_combine2(ecuador)
+elsalvador_test <- factor_unfactor_combine2(elsalvador)
+guatemala_test <- factor_unfactor_combine2(guatemala)
+guyana_test <- factor_unfactor_combine2(guyana)
+paraguay_test <- factor_unfactor_combine2(paraguay)
+honduras_test <- factor_unfactor_combine2(honduras)
+jamaica_test <- factor_unfactor_combine2(jamaica)
+mexico_test <- factor_unfactor_combine2(mexico)
+nicaragua_test <- factor_unfactor_combine2(nicaragua)
+panama_test <- factor_unfactor_combine2(panama)
+peru_test <- factor_unfactor_combine2(peru)
+suriname_test <- factor_unfactor_combine2(suriname)
+usa_test <- factor_unfactor_combine2(usa)
+uruguay_test <- factor_unfactor_combine2(uruguay)
+venezuela_test <- factor_unfactor_combine2(venezuela)
 ```
 
+```{r}
+attributes(argentina)$names
+```
+
+
+Random tests
 ```{r}
 d <- argentina_before %>% select(!!! syms(all_common_col[1]))
 as.name(unlist(all_common_col[1]))

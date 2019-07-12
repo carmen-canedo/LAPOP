@@ -4,13 +4,13 @@ output: html_notebook
 editor_options: 
   chunk_output_type: inline
 ---
-
+SIX
 ```{r}
 library(sjmisc)
 
 #Replaces the columns that have "No se le preguntó en este país o año" and others with NA
 turn_to_NA <- function(country){
-  country <- set_na(country, na = c("No se le preguntó en este país o año", "Not asked in this country or year","No Aplica"), as.tag = TRUE)
+  country <- set_na(country, na = c("No se le preguntó en este país o año", "Not asked in this country or year","No Aplica", "No sabe"), as.tag = TRUE)
 }
 
 

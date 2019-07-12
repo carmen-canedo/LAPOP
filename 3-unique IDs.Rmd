@@ -4,7 +4,7 @@ output: html_notebook
 editor_options: 
   chunk_output_type: inline
 ---
-
+FIVEs
 #Makes unique ids and combines
 We added an extra column that just numbered all the way down for the amount of columns because we needed a unique attribute for when spreading
 ```{r}

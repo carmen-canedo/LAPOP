@@ -4,6 +4,7 @@ output: html_notebook
 editor_options: 
   chunk_output_type: inline
 ---
+THIRD
 
 ```{r}
 library(purrr)
@@ -15,7 +16,6 @@ shrink <- function(country){
   return(country)
 }
 
-arg_before <- shrink(argentina_before)
 argentina  <- shrink(argentina)
 belize  <- shrink(belize)
 bolivia  <- shrink(bolivia)
